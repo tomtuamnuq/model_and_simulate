@@ -1,29 +1,27 @@
 import pygame
 from .simulation import Simulation
-from .visualization import Molecule, WHITE
-
-SCREEN_WIDTH = 500
-SCREEN_HEIGHT = 500
+from .visualization import Molecule, BLACK, CoordinateMapper
 
 
 def main():
-
-    num_molecules = 300
-    num_rows = 10
-    num_columns = 10
+    num_molecules = 500
+    display_dim = (800, 600)
+    num_rows = 15
+    num_columns = 15
     sigma = 1
     distribution = "uniform"
     simulation = Simulation(num_molecules, num_rows, num_columns, sigma, distribution)
-    # pylint: disable=no-member
     pygame.init()
     molecule_sprites = pygame.sprite.Group()
+    screen = pygame.display.set_mode(display_dim)
+    coord_mapper = CoordinateMapper(simulation.dim, display_dim)
     for molecule in simulation.molecules:
         pos = simulation.positions[molecule]
         vel = simulation.velocities[molecule]
-        molecule_sprites.add(Molecule(sigma, pos, vel))
+        molecule_sprites.add(Molecule(coord_mapper, sigma, pos, vel))
 
-    screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
     running = True
+    clock = pygame.time.Clock()
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -33,8 +31,9 @@ def main():
                     running = False
         simulation.do_step()
         molecule_sprites.update()
-        screen.fill(WHITE)
+        screen.fill(BLACK)
         molecule_sprites.draw(screen)
         pygame.display.flip()
+        clock.tick(30)
 
     pygame.quit()

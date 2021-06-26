@@ -17,8 +17,5 @@ pip install black
 # git clone git@github.com:tomtuamnuq/model_and_simulate.git
 
 pip install numpy
-pip install matplotlib
-pip install scipy
-pip install pandas
 pip install pygame
 

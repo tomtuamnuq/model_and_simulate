@@ -1,11 +1,10 @@
-# pylint: disable=invalid-name
+from typing import Optional
 
-from typing import Optional, Tuple
 import numpy as np
 
 
 class Field:
-    def __init__(self, num_rows: int, num_columns: int, cell_size: float) -> None:
+    def __init__(self, num_rows: int, num_columns: int, cell_size: int) -> None:
         self.width = cell_size * num_columns
         self.height = cell_size * num_rows
         self.cell_ranges = (range(1, num_rows + 1), range(1, num_columns + 1))
@@ -29,7 +28,9 @@ class Field:
             j = indices_x[n]
             self._cells[i][j].append(n)
 
-    def get_relevant_cells(self, i: int, j: int) -> Tuple[list[int], list[Optional[np.ndarray]]]:
+    def get_relevant_cells(
+        self, i: int, j: int
+    ) -> tuple[list[list[int]], list[Optional[np.ndarray]]]:
         """Gives the 4 cells which are right or below the specified cell and the cell itself.
         The Tuple contains the cells and optional displacement vectors for border cells."""
         if i < 1 or i > len(self._cells) - 2 or j < 1 or j > len(self._cells[1]) - 2:

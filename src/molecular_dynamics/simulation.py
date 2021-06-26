@@ -1,4 +1,4 @@
-# pylint: disable=invalid-name
+from typing import Tuple
 
 import numpy as np
 from numpy.random import default_rng
@@ -9,19 +9,21 @@ rng = default_rng(seed=SEED)
 
 
 class Simulation:
+    cut_off_factor = 4
+
     def __init__(
         self,
         num_molecules: int,
         num_rows: int,
         num_columns: int,
-        sigma: float,
+        sigma: int,
         distribution: str,
-        h: float = 0.001,
+        h: float = 0.01,
         **init_kwargs,
     ) -> None:
         self._molecules = list(range(num_molecules))
         self._sigma = sigma
-        self.r_c = round(sigma * 3.5)
+        self.r_c = Simulation.cut_off_factor * sigma
         self._field = Field(num_rows, num_columns, self.r_c)
         self._num_rows = num_rows
         self._num_columns = num_columns
@@ -42,6 +44,10 @@ class Simulation:
         self._positions = np.column_stack((positions_x, positions_y))
         self._velocities = np.column_stack((velocities_x, velocities_y))
         self._accelerations = np.zeros_like(self._positions)
+
+    @property
+    def dim(self) -> Tuple[int, int]:
+        return self._field.width, self._field.height
 
     @property
     def molecules(self) -> list[int]:
