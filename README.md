@@ -6,7 +6,7 @@ I would like to acknowledge the work of Hans-Joachim Bungartz, Stefan Zimmer and
 
 I am doing the course **01610** at FernUniversität in Hagen. It uses the above mentioned book to explain the basics of simulations at a university level. This repo does not contain any solutions to exercises of the course.
 
-The folder simulation contains individual projects.  
+The folder src contains individual projects.  
 Microscopic modeling of road traffic is the implementation of Chapter 8.  
 The visualization is done with Pygame. Please execute the file visualization.py to see the simulation.
 
