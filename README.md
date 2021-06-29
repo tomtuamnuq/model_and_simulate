@@ -10,8 +10,13 @@ The folder src contains individual projects.
 Microscopic modeling of road traffic is the implementation of Chapter 8.  
 The visualization is done with Pygame. Please execute the file visualization.py to see the simulation.
 
-Molekulardynamics is the implementation of Chapter 13.  
+Moleculardynamics is the implementation of Chapter 13.  
 
+I have searched [looperman](https://www.looperman.com/loops) to get some fancy music loops for pygame.
+I would like to thank Rasputin(Brisk Bass Sequence, Goa Trance Gated Vox), SUPERSAMPLE(KORG 2),
+and soaren(Temptation Playground Trippy Bells).
+Some sound effects were taken from [freesound](https://freesound.org). Thanks to michael_kur95(Hit02),
+Leszek_Szary(jumping), Tissman(hit3). The sounds are under CC0 1.0 Universal license.
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 

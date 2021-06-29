@@ -1,14 +1,24 @@
+"""Module with molecule simulation class and additional features."""
 from typing import Tuple
-
+from functools import partial
 import numpy as np
 from numpy.random import default_rng
 from .field import Field
+from ..utilities.coordinate_mapper import CoordinateMapper2D
 
 SEED = 1234
 rng = default_rng(seed=SEED)
 
+distributions = {
+    "uniform": rng.uniform,
+    "exponential_zero": rng.exponential,
+    "exponential_center": rng.exponential,
+    "normal_zero": rng.normal,
+    "normal_center": rng.normal,
+}  # type str[callable]
 
-class Simulation:
+
+class MoleculeSimulation:
     cut_off_factor = 4
 
     def __init__(
@@ -18,36 +28,45 @@ class Simulation:
         num_columns: int,
         sigma: int,
         distribution: str,
-        h: float = 0.01,
-        **init_kwargs,
+        h: float,
+        init_vel_range: Tuple[float, float],
     ) -> None:
         self._molecules = list(range(num_molecules))
         self._sigma = sigma
-        self.r_c = Simulation.cut_off_factor * sigma
+        self.r_c = MoleculeSimulation.cut_off_factor * sigma
         self._field = Field(num_rows, num_columns, self.r_c)
         self._num_rows = num_rows
         self._num_columns = num_columns
         self._h = h
-        if distribution == "uniform":
-            rng_gen = rng.uniform
-            positions_x = rng_gen(low=0, high=self._field.width, size=num_molecules)
-            positions_y = rng_gen(low=0, high=self._field.height, size=num_molecules)
-            velocities_x = rng_gen(low=-0.1, high=0.1, size=num_molecules)
-            velocities_y = rng_gen(low=-0.1, high=0.1, size=num_molecules)
-
-        elif distribution == "exponential":
-            rng_gen = rng.exponential
-        elif distribution == "normal":
-            rng_gen = rng.normal
-        else:
-            raise ValueError(f"{distribution=} is not supported!")
-        self._positions = np.column_stack((positions_x, positions_y))
+        rng_gen = distributions[distribution]
+        centralize = "center" in distribution
+        self._positions = self._init_positions(rng_gen, centralize)
+        velocities_x = rng.uniform(
+            low=init_vel_range[0], high=init_vel_range[1], size=num_molecules
+        )
+        velocities_y = rng.uniform(
+            low=init_vel_range[0], high=init_vel_range[1], size=num_molecules
+        )
         self._velocities = np.column_stack((velocities_x, velocities_y))
-        self._accelerations = np.zeros_like(self._positions)
+        self._accelerations = np.zeros_like(self._velocities)
+
+    def _init_positions(self, rng_gen: callable, centralize: bool) -> np.ndarray:
+        positions_x = rng_gen(size=len(self._molecules))
+        positions_y = rng_gen(size=len(self._molecules))
+        pos_range_x = min(positions_x), max(positions_x)
+        pos_range_y = min(positions_y), max(positions_y)
+        coord_mapper = CoordinateMapper2D(pos_range_x, pos_range_y, *self.dim)
+        positions = np.column_stack((positions_x, positions_y))
+        center = np.asarray([self._field.width / 2, self._field.height / 2])
+        for m in self._molecules:
+            positions[m] = coord_mapper.map_coordinates(positions[m])
+            if centralize:
+                positions[m] += center
+        return positions
 
     @property
-    def dim(self) -> Tuple[int, int]:
-        return self._field.width, self._field.height
+    def dim(self) -> Tuple[Tuple[int, int], Tuple[int, int]]:
+        return (0, self._field.width), (0, self._field.height)
 
     @property
     def molecules(self) -> list[int]:
