@@ -1,6 +1,5 @@
 """Module with molecule simulation class and additional features."""
 from typing import Tuple
-from functools import partial
 import numpy as np
 from numpy.random import default_rng
 from .field import Field
@@ -11,6 +10,9 @@ rng = default_rng(seed=SEED)
 
 distributions = {
     "uniform": rng.uniform,
+    "gumbel": rng.gumbel,
+    "logistic_center": rng.logistic,
+    "cauchy_center": rng.standard_cauchy,
     "exponential_zero": rng.exponential,
     "exponential_center": rng.exponential,
     "normal_zero": rng.normal,
@@ -19,6 +21,8 @@ distributions = {
 
 
 class MoleculeSimulation:
+    """Class for the actual simulation of molecules."""
+
     cut_off_factor = 4
 
     def __init__(
@@ -31,6 +35,17 @@ class MoleculeSimulation:
         h: float,
         init_vel_range: Tuple[float, float],
     ) -> None:
+        """
+        Args:
+            num_molecules (int): Number of molecules
+            num_rows (int): Number of rows for field.
+            num_columns (int): Number of columns for field.
+            sigma (int): Radius of molecules.
+            distribution (str): Distribution to draw positions initially from.
+            h (float): Step size parameter delta_t.
+            init_vel_range (Tuple[float, float]): Uniform distribution params
+             to draw velocities initially from.
+        """
         self._molecules = list(range(num_molecules))
         self._sigma = sigma
         self.r_c = MoleculeSimulation.cut_off_factor * sigma
@@ -66,18 +81,22 @@ class MoleculeSimulation:
 
     @property
     def dim(self) -> Tuple[Tuple[int, int], Tuple[int, int]]:
+        """Coordinate ranges of simulated field."""
         return (0, self._field.width), (0, self._field.height)
 
     @property
     def molecules(self) -> list[int]:
+        """List of molecules."""
         return self._molecules
 
     @property
     def positions(self) -> np.ndarray:
+        """Numpy array with x-y-positions."""
         return self._positions
 
     @property
     def velocities(self) -> np.ndarray:
+        """Numpy array with x-y-velocities."""
         return self._velocities
 
     def _calc_velocities(self) -> None:
@@ -93,13 +112,13 @@ class MoleculeSimulation:
                 current_cell = self._field.get_cell(i, j)
                 other_cells, displacements = self._field.get_relevant_cells(i, j)
                 for u in current_cell:
-                    for cell, displ in zip(other_cells, displacements):
-                        if displ is None:
+                    for cell, displacement in zip(other_cells, displacements):
+                        if displacement is None:
                             for v in cell:
                                 self._calc_force(u, v, self._positions[v])
                         else:
                             for v in cell:
-                                pos_v = self._positions[v] + displ
+                                pos_v = self._positions[v] + displacement
                                 self._calc_force(u, v, pos_v)
 
     def _calc_force(self, u: int, v: int, pos_v: np.ndarray) -> None:

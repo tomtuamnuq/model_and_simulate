@@ -9,7 +9,7 @@ class Molecule(pygame.sprite.Sprite):
         super(Molecule, self).__init__()
         self.mapper = mapper
         self.image = pygame.Surface((2 * sigma, 2 * sigma))
-        self.image.fill(Color.RED.value)
+        self.image.fill(Color.WHITE.value)
         self.image.set_colorkey(Color.WHITE.value)
         pygame.draw.circle(self.image, Color.HGREEN.value, [sigma, sigma], sigma)
         self.rect = self.image.get_rect()

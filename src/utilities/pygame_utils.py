@@ -65,7 +65,7 @@ class SimplePygame:
         self._all_sprites.update()
         self._screen.fill(Color.BLACK.value)
         self._all_sprites.draw(self._screen)
-        self.draw_text("Test", 200, 200)
+        self.draw_text("Test", 0, 0)
         pg.display.flip()
         self._clock.tick(FPS)
 
@@ -91,5 +91,5 @@ class SimplePygame:
         font = pg.font.Font(self._font, size)
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()
-        text_rect.midtop = (int(x), int(y))
+        text_rect.topleft = (int(x), int(y))
         self._screen.blit(text_surface, text_rect)
