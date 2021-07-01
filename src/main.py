@@ -1,3 +1,4 @@
+"""Module to select which simulation to run."""
 import src.molecular_dynamics.molecule_main as molecular_sim
 
 
