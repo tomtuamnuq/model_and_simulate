@@ -9,7 +9,7 @@ class SwitchButton(pg.sprite.Sprite):
 
     inner_surface_offset_factor: float = 1 / 5
     font_name: str = "arial"
-    font_antialias: bool = False
+    font_antialias: bool = True
 
     def __init__(
         self,
@@ -89,7 +89,10 @@ class SwitchButton(pg.sprite.Sprite):
             SwitchButton.font_name,
             self._inner_rect.height,
         )
-        self._one_line = font.size(text)[0] <= self._inner_rect.width
+        self._one_line = (
+            font.size(text)[0]
+            <= self._inner_rect.width
+        )
 
     def update(self, eventlist: list[pg.event], mouse_pos: tuple[int, int]) -> None:
         """Check the button logic in every loop."""

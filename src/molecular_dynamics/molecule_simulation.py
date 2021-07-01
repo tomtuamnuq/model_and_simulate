@@ -10,13 +10,13 @@ rng = default_rng(seed=SEED)
 
 distributions = {
     "uniform": rng.uniform,
-    "gumbel": rng.gumbel,
-    "logistic_center": rng.logistic,
     "cauchy_center": rng.standard_cauchy,
     "exponential_zero": rng.exponential,
-    "exponential_center": rng.exponential,
+    "gumbel": rng.gumbel,
     "normal_zero": rng.normal,
     "normal_center": rng.normal,
+    # "logistic_center": rng.logistic,
+    # "exponential_center": rng.exponential,
 }  # type str[callable]
 
 

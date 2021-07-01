@@ -77,8 +77,8 @@ class SimplePygame:
         self._all_sprites.update(**update_kwargs)
         self._screen.fill(Color.BLACK.value)
         self._all_sprites.draw(self._screen)
-        for text_data in self._all_texts:
-            self._draw_text(*text_data)
+        for text_args in self._all_texts:
+            self._draw_text(*text_args)
         pg.display.flip()
         self._clock.tick(FPS)
 
