@@ -19,6 +19,10 @@ class Color(Enum):
     HGREEN = (71, 237, 38)
     BROWN = (102, 9, 11)
     BLUE = (67, 177, 224)
+    SILVER = (192, 192, 192)
+    LIGHTGREY = (119, 136, 153)
+    PERU = (205, 133, 63)
+    GOLD = (255, 215, 0)
 
 
 sound_music = {
@@ -54,18 +58,27 @@ class SimplePygame:
             key: pg.mixer.Sound(path.join(sound_dir_effects, value))
             for key, value in sound_effects.items()
         }
+        self._all_texts = []
+
+    @property
+    def all_texts(self) -> list[tuple[str, float, float, int, Color]]:
+        return self._all_texts
+
+    def add_text(self, text: str, x: float, y: float, size: int = 22, color: Color = Color.WHITE):
+        self._all_texts.append((text, (int(x), int(y)), size, color.value))
 
     @property
     def all_sprites(self) -> pg.sprite.Group:
         """All sprites to consider in every loop. Add sprites to this group."""
         return self._all_sprites
 
-    def loop(self) -> None:
-        """Perform one loop of pygame. This updates and draws all sprites."""
-        self._all_sprites.update()
+    def loop(self, **update_kwargs) -> None:
+        """Perform one loop of pygame. This updates and draws all sprites and texts."""
+        self._all_sprites.update(**update_kwargs)
         self._screen.fill(Color.BLACK.value)
         self._all_sprites.draw(self._screen)
-        self.draw_text("Test", 0, 0)
+        for text_data in self._all_texts:
+            self._draw_text(*text_data)
         pg.display.flip()
         self._clock.tick(FPS)
 
@@ -84,12 +97,15 @@ class SimplePygame:
         pg.mixer.music.fadeout(500)
         pg.quit()
 
-    def draw_text(
-        self, text: str, x: float, y: float, size: int = 22, color: Color = Color.WHITE
+    def _draw_text(
+        self,
+        text: str,
+        pos: tuple[int, int],
+        size: int,
+        color: tuple[int, int, int],
     ) -> None:
-        color = color.value
         font = pg.font.Font(self._font, size)
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()
-        text_rect.topleft = (int(x), int(y))
+        text_rect.topleft = pos
         self._screen.blit(text_surface, text_rect)

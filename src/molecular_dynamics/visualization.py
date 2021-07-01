@@ -1,7 +1,7 @@
 import numpy as np
 import pygame
 from src.utilities.coordinate_mapper import CoordinateMapper2D
-from src.utilities.pygame_utils import Color
+from src.utilities.pygame_simple import Color
 
 
 class Molecule(pygame.sprite.Sprite):
