@@ -17,7 +17,7 @@ with open(VERSION_PATH, "r") as version_file:
 
 setuptools.setup(
     name="model-and-simulate",
-    version="0.1.0",
+    version=VERSION,
     description="Student projects to learn modeling and simulating.",
     long_description=README,
     long_description_content_type="text/markdown",
