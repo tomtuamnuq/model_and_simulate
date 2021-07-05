@@ -4,7 +4,13 @@ import pygame
 from .molecule_simulation import MoleculeSimulation
 from .visualization import Molecule
 from src.utilities.coordinate_mapper import CoordinateMapper2D
-from src.utilities.pygame_simple import SimplePygame
+from src.utilities.pygame_simple import (
+    SimplePygame,
+    check_for_continue,
+    check_for_reset,
+    play_music_loop,
+    quit_pygame
+)
 
 
 @dataclass
@@ -14,7 +20,7 @@ class SimulationParameters:
     num_molecules: int = 500
     num_rows: int = 15
     num_columns: int = 15
-    sigma: float = 1
+    sigma: int = 1
     distribution: str = "uniform"
     time_step: float = 0.01
     init_vel_range: tuple[int, int] = -10, 10
@@ -23,8 +29,10 @@ class SimulationParameters:
 def molecule_main():
     simple_pygame = SimplePygame("Molecule Simulation")
     from .molecule_start_screen import show_start_screen
+    from src.main import do_reset
+
     simulation_parameters = show_start_screen(simple_pygame)
-    simple_pygame.play_music_loop("sim_psy")
+    play_music_loop("sim_psy")
     simulation = MoleculeSimulation(*dataclasses.astuple(simulation_parameters))
     width, height = pygame.display.get_window_size()
     display_dim = ((0, width), (0, height))
@@ -41,28 +49,8 @@ def molecule_main():
         for event in pygame.event.get():
             running = check_for_continue(event)
             if check_for_reset(event):
-                simple_pygame.quit()
-                molecule_main()
+                do_reset()
         simulation.do_step()
         simple_pygame.loop()
 
-    simple_pygame.quit()
-
-
-def check_for_continue(event: pygame.event.Event) -> True:
-    """Check if the user wants to end the simulation."""
-    running = True
-    if event.type == pygame.QUIT:
-        running = False
-    elif event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_ESCAPE:
-            running = False
-    return running
-
-
-def check_for_reset(event: pygame.event.Event) -> True:
-    """Check if the user wants to reset the simulation."""
-    if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_SPACE:
-            return True
-    return False
+    quit_pygame()

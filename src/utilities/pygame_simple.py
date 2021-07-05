@@ -1,6 +1,7 @@
 """Contains utility classes and functions for handling pygame."""
 from enum import Enum
 from os import path
+
 import pygame as pg
 
 FONT_NAME = "arial"
@@ -23,6 +24,8 @@ class Color(Enum):
     LIGHTGREY = (119, 136, 153)
     PERU = (205, 133, 63)
     GOLD = (255, 215, 0)
+    AQUA = (0,255,255)
+    AQUAMARINE = (127,255,212)
 
 
 sound_music = {
@@ -40,6 +43,38 @@ sound_effects = {
 sound_dir = path.join(path.dirname(__file__), "sound")
 sound_dir_music = path.join(sound_dir, "music")
 sound_dir_effects = path.join(sound_dir, "effects")
+
+
+def play_music_loop(sound: str) -> None:
+    """Play a sound with key in `sound_loops`."""
+    filename = sound_music[sound]
+    pg.mixer.music.load(path.join(sound_dir_music, filename))
+    pg.mixer.music.play(loops=-1)
+
+
+def quit_pygame() -> None:
+    """End the pygame engine."""
+    pg.mixer.music.fadeout(500)
+    pg.quit()
+
+
+def check_for_continue(event: pg.event.Event) -> True:
+    """Check if the user wants to end the simulation."""
+    running = True
+    if event.type == pg.QUIT:
+        running = False
+    elif event.type == pg.KEYDOWN:
+        if event.key == pg.K_ESCAPE:
+            running = False
+    return running
+
+
+def check_for_reset(event: pg.event.Event) -> True:
+    """Check if the user wants to reset the simulation."""
+    if event.type == pg.KEYDOWN:
+        if event.key == pg.K_SPACE:
+            return True
+    return False
 
 
 class SimplePygame:
@@ -82,20 +117,9 @@ class SimplePygame:
         pg.display.flip()
         self._clock.tick(FPS)
 
-    def play_music_loop(self, sound: str) -> None:
-        """Play a sound with key in `sound_loops`."""
-        filename = sound_music[sound]
-        pg.mixer.music.load(path.join(sound_dir_music, filename))
-        pg.mixer.music.play(loops=-1)
-
     def play_effect(self, effect: str) -> None:
         """Play a sound effect with key in `sound_effects`."""
         self._sound_effects[effect].play()
-
-    def quit(self) -> None:
-        """End the pygame engine."""
-        pg.mixer.music.fadeout(500)
-        pg.quit()
 
     def _draw_text(
         self,
