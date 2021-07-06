@@ -2,11 +2,12 @@
 
 The book *Modellbildung und Simulation: Eine anwendungsorientierte Einführung* contains interesting topics such as
 road traffic, scheduling, chaos, and moleculardynamics. 
-It describes the models and implementation ideas. To further dive into the simulations, this repo holds implementations
+It describes the modeling and simulation ascpects. But it gives only some implementation ideas, and contains no program code.
+To further dive into the simulations, this repo holds implementations
 of the presented models in Python with visualization in pygame or with matplotlib. 
 
 The folder src contains individual projects.  All simulations have an individual main method. 
-Use the method with *src.main*
+Use the method with *src/main*
 
 ### Moleculardynamics (finished)
 Moleculardynamics is the implementation of Chapter 13. As model the *Lennard-Jones Potential*
