@@ -1,8 +1,8 @@
 """Module with `Molecule` class as visualization in pygame."""
 import numpy as np
 import pygame
-from src.utilities.coordinate_mapper import CoordinateMapper2D
-from src.utilities.pygame_simple import Color
+from model_and_simulate.utilities.coordinate_mapper import CoordinateMapper2D
+from model_and_simulate.utilities.pygame_simple import Color
 
 
 class Molecule(pygame.sprite.Sprite):

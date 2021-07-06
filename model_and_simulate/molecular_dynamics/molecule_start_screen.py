@@ -2,9 +2,9 @@
 from typing import Optional, TypedDict
 import pygame
 
-from src.molecular_dynamics.molecule_simulation import distributions, SimulationParameters
-from src.utilities.pygame_button import SwitchButton, TextButton, Button
-from src.utilities.pygame_simple import (
+from model_and_simulate.molecular_dynamics.molecule_simulation import distributions, SimulationParameters
+from model_and_simulate.utilities.pygame_button import SwitchButton, TextButton, Button
+from model_and_simulate.utilities.pygame_simple import (
     SimplePygame,
     Color,
     check_for_quit,

@@ -12,7 +12,7 @@ with open("README.md") as f:
 with open("LICENSE.txt") as f:
     LICENSE = f.read()
 
-VERSION_PATH = os.path.join(os.path.dirname(__file__), "src", "VERSION.txt")
+VERSION_PATH = os.path.join(os.path.dirname(__file__), "model_and_simulate", "VERSION.txt")
 with open(VERSION_PATH, "r") as version_file:
     VERSION = version_file.read().strip()
 

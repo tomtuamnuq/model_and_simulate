@@ -4,8 +4,8 @@ import dataclasses
 import pygame
 from .molecule_simulation import MoleculeSimulation, SimulationParameters
 from .molecule_sprite import Molecule
-from src.utilities.coordinate_mapper import CoordinateMapper2D
-from src.utilities.pygame_simple import (
+from model_and_simulate.utilities.coordinate_mapper import CoordinateMapper2D
+from model_and_simulate.utilities.pygame_simple import (
     SimplePygame,
     check_for_quit,
     check_for_reset,

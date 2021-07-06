@@ -7,7 +7,7 @@ To further dive into the simulations, this repo holds implementations
 of the presented models in Python with visualization in pygame or with matplotlib. 
 
 The folder src contains individual projects.  All simulations have an individual main method. 
-Use the method with *src/main*
+Use the method with *model_and_simulate/main*
 
 ### Moleculardynamics (finished)
 Moleculardynamics is the implementation of Chapter 13. As model the *Lennard-Jones Potential*
@@ -16,10 +16,17 @@ The accelerations get calculated by using the *Velocity-Störmer-Verlet* algorit
 To avoid quadratic runtime scaling, a *Linked-Cells-Datastructure* is implemented.
 
 The simulation has a menu to set parameters such as number of molecules, molecule radius (Sigma), and the Cell grid structure:
-![start screen](src/molecular_dynamics/screenshots/molecule_sim_start_uni.JPG)
+![start screen](model_and_simulate/molecular_dynamics/pics/molecule_sim_start_uni.JPG)
 Step size dt is the resolution of the algorithm in the numerical solution of the equations of motion.
 6 different distributions can be chosen to draw the initial molecule positions from:
-![distributions](src/molecular_dynamics/screenshots/molecule_sim_cauchy_normal.JPG)
+![distributions](model_and_simulate/molecular_dynamics/pics/molecule_sim_cauchy_normal.JPG)
+
+### Attractors in Chaos theory (in progress)
+Chapter 12 describes chaotic systems and shows simulations as bifurcation diagrams. 
+One common attractor is the Lorenz-Attractor (Butterfly effect). The corresponding three-dimensional
+system of nonlinear differential equations is not in the book. An implementation with 
+*Runge-Kutta* procedure from *scipy.integrate* and *matplotlib* visualization produces a rotatable figure:
+![lorenz attractor](model_and_simulate/chaos/pics/lorenz.JPG)
 
 ### Microscopic modeling of road traffic (coming next)
 Microscopic modeling of road traffic is the implementation of Chapter 8. 
@@ -33,6 +40,9 @@ The course **01610** at FernUniversität in Hagen uses the above mentioned book 
 simulations at a university level. The course is very exciting:
 [Simulation](https://www.fernuni-hagen.de/mi/studium/module/sim.shtml?sg=bainf)
 This repo does not contain any solutions to exercises of the course. 
+
+The Lorenz-Attractor equations are from [wikipedia](https://en.wikipedia.org/wiki/Lorenz_system):
+Lorenz, Edward Norton (1963). "Deterministic nonperiodic flow". Journal of the Atmospheric Sciences. 20 (2): 130–141. 
 
 I searched [looperman](https://www.looperman.com/loops) to get some fancy music loops for pygame.
 I would like to thank Rasputin(Brisk Bass Sequence, Goa Trance Gated Vox), SUPERSAMPLE(KORG 2),
