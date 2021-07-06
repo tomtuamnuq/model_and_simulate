@@ -7,6 +7,8 @@ from .pygame_simple import Color
 
 
 class Button(Sprite, ABC):
+    """Abstract base class for pygame buttons."""
+
     font_antialias: bool = True
     font_name: str = "arial"
     inner_surface_offset_factor: float = 1 / 5
@@ -55,10 +57,11 @@ class Button(Sprite, ABC):
         self._inner_rect.topleft = pos[0] + self._offset[0], pos[1] + self._offset[1]
         self._text_color = text_color.value
         self._one_line = True
+        self._on_hover_listeners = []  # type: list[callable]
         self.text = text
 
-    def _draw_outer_color(self, mouse_pos) -> None:
-        color = self._active_color if self._rect.collidepoint(mouse_pos) else self._inactive_color
+    def _draw_outer_color(self, active: bool) -> None:
+        color = self._active_color if active else self._inactive_color
         self.image.fill(color)
 
     def _draw_inner_color(self) -> None:
@@ -80,12 +83,29 @@ class Button(Sprite, ABC):
 
     def update(self, mouse_pos: tuple[int, int]) -> None:
         """Check the button logic in every loop."""
-        self._draw_outer_color(mouse_pos)
+        active = self.check_active(mouse_pos)
+        if active:
+            for listener in self._on_hover_listeners:
+                listener(self)
+        self._draw_outer_color(active)
         self._draw_inner_color()
         self._draw_text()
         self.image.blit(self._inner_surface, self._offset)
 
-    def check_pos_collision(self, pos) -> bool:
+    def add_on_hover_listener(self, listener: callable) -> None:
+        """Listener to call when mouse is over the outer rectangle."""
+        self._on_hover_listeners.append(listener)
+
+    def clear_on_hover_listeners(self) -> None:
+        """Removes all added on click listeners."""
+        self._on_hover_listeners.clear()
+
+    def check_active(self, pos: tuple[int, int]) -> bool:
+        """Checks if pos is in outer rectangle."""
+        return self._rect.collidepoint(pos)
+
+    def check_pos_collision(self, pos: tuple[float, float]) -> bool:
+        """Checks if pos is in inner rectangle."""
         return self._inner_rect.collidepoint(pos)
 
     @property
@@ -147,10 +167,12 @@ class SwitchButton(Button):
 
     @property
     def on(self) -> bool:
+        """Status of this button."""
         return self._on
 
     @on.setter
     def on(self, on: bool) -> None:
+        """Setter for on."""
         self._on = on
 
     def add_on_click_listener(self, listener: callable) -> None:
@@ -223,9 +245,9 @@ class TextButton(Button):
 
     @Button.text.setter
     def text(self, text: str) -> None:
+        """Setter for text. It respects `self._max_length`."""
         text = text[: self._max_length]
-        Button.text.fset(self, text)
-
+        Button.text.fset(self, text)  # call parent property setter
 
     def finish_input(self):
         """Finish the text input."""

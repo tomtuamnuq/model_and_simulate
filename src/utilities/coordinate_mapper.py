@@ -20,23 +20,28 @@ class CoordinateMapper2D:
 
     @property
     def src_dim(self) -> Tuple[Tuple[int, int], Tuple[int, int]]:
+        """x and y ranges of source."""
         return self._src_dim
 
     @src_dim.setter
     def src_dim(self, src_dim: Tuple[Tuple[int, int], Tuple[int, int]]) -> None:
+        """Setter for src_dim."""
         self._src_dim = src_dim
         self._scale_matrix = self._calc_scale_matrix()
 
     @property
     def dst_dim(self) -> Tuple[Tuple[int, int], Tuple[int, int]]:
+        """x and y ranges of destination."""
         return self._dst_dim
 
     @dst_dim.setter
     def dst_dim(self, dst_dim: Tuple[Tuple[int, int], Tuple[int, int]]) -> None:
+        """Setter for dst_dim."""
         self._dst_dim = dst_dim
         self._scale_matrix = self._calc_scale_matrix()
 
     def map_coordinates(self, pos_sim: np.ndarray) -> np.ndarray:
+        """Maps source coordinates to destination coordinates."""
         return np.matmul(pos_sim, self._scale_matrix)
 
     def _calc_scale_matrix(self) -> np.ndarray:

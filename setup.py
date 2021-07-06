@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# package is not distributed
 import os
 import setuptools
 

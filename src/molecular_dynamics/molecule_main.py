@@ -1,38 +1,37 @@
+"""Module with function to set parameters and run the molecule simulation."""
 import dataclasses
-from dataclasses import dataclass
+
 import pygame
-from .molecule_simulation import MoleculeSimulation
-from .visualization import Molecule
+from .molecule_simulation import MoleculeSimulation, SimulationParameters
+from .molecule_sprite import Molecule
 from src.utilities.coordinate_mapper import CoordinateMapper2D
 from src.utilities.pygame_simple import (
     SimplePygame,
-    check_for_continue,
+    check_for_quit,
     check_for_reset,
     play_music_loop,
-    quit_pygame
 )
+from .molecule_start_screen import show_start_screen
 
 
-@dataclass
-class SimulationParameters:
-    """Class for keeping track of the simulation parameters in menu."""
-
-    num_molecules: int = 500
-    num_rows: int = 15
-    num_columns: int = 15
-    sigma: int = 1
-    distribution: str = "uniform"
-    time_step: float = 0.01
-    init_vel_range: tuple[int, int] = -10, 10
-
-
-def molecule_main():
+def molecule_main() -> bool:
+    """Performs the simulation and returns reset signal."""
     simple_pygame = SimplePygame("Molecule Simulation")
-    from .molecule_start_screen import show_start_screen
-    from src.main import do_reset
 
-    simulation_parameters = show_start_screen(simple_pygame)
-    play_music_loop("sim_psy")
+    simulation_parameters, running, reset = show_start_screen(simple_pygame)
+    if running:
+        simulation = initialize(simple_pygame, simulation_parameters)
+    else:
+        simulation = None
+    while running:
+        running, reset = do_simulation_loop(simple_pygame, simulation)
+    return reset
+
+
+def initialize(simple_pygame: SimplePygame, simulation_parameters: SimulationParameters):
+    """Setup the simulation and pygame visualization."""
+    music = "sim_bass" if simulation_parameters.time_step < 0.01 else "sim_psy"
+    play_music_loop(music)
     simulation = MoleculeSimulation(*dataclasses.astuple(simulation_parameters))
     width, height = pygame.display.get_window_size()
     display_dim = ((0, width), (0, height))
@@ -41,16 +40,19 @@ def molecule_main():
     molecule_sprites.empty()
     for molecule in simulation.molecules:
         pos = simulation.positions[molecule]
-        vel = simulation.velocities[molecule]
-        molecule_sprites.add(Molecule(coord_mapper, simulation_parameters.sigma, pos, vel))
+        molecule_sprites.add(Molecule(coord_mapper, simulation_parameters.sigma, pos))
+    return simulation
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            running = check_for_continue(event)
-            if check_for_reset(event):
-                do_reset()
-        simulation.do_step()
-        simple_pygame.loop()
 
-    quit_pygame()
+def do_simulation_loop(simple_pygame, simulation) -> tuple[bool, bool]:
+    """Performs one loop of event checking, simulation calculation, and pygame drawing."""
+    running, reset = True, False
+    for event in pygame.event.get():
+        if check_for_quit(event):
+            running = False
+        elif check_for_reset(event):
+            running = False
+            reset = True
+    simulation.do_step()
+    simple_pygame.loop()
+    return running, reset

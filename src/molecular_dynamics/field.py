@@ -1,10 +1,20 @@
+"""Module for class `Field`."""
 from typing import Optional
 
 import numpy as np
 
 
 class Field:
+    """A 2-D area of cells to use as simulation field."""
+
     def __init__(self, num_rows: int, num_columns: int, cell_size: int) -> None:
+        """
+        Create a field with `num_rows` * `num_columns` fields of size `cell_size`.
+        Args:
+            num_rows (int):
+            num_columns (int):
+            cell_size (int):
+        """
         self.width = cell_size * num_columns
         self.height = cell_size * num_rows
         self.cell_ranges = (range(1, num_rows + 1), range(1, num_columns + 1))

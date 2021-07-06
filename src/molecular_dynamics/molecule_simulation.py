@@ -1,12 +1,13 @@
 """Module with molecule simulation class and additional features."""
+from dataclasses import dataclass
 from typing import Tuple
 import numpy as np
 from numpy.random import default_rng
 from .field import Field
 from ..utilities.coordinate_mapper import CoordinateMapper2D
 
-SEED = 1234
-rng = default_rng(seed=SEED)
+# SEED = 1234
+rng = default_rng()  # keyword seed=SEED
 
 distributions = {
     "uniform": rng.uniform,
@@ -138,3 +139,16 @@ class MoleculeSimulation:
         self._field.place_into_cells(self._positions)
         self._calc_forces()
         self._calc_velocities()
+
+
+@dataclass
+class SimulationParameters:
+    """Class for keeping track of the simulation parameters in menus."""
+
+    num_molecules: int = 500
+    num_rows: int = 15
+    num_columns: int = 15
+    sigma: int = 1
+    distribution: str = "uniform"
+    time_step: float = 0.01
+    init_vel_range: tuple[int, int] = -10, 10

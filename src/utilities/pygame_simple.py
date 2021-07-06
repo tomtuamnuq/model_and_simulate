@@ -24,8 +24,8 @@ class Color(Enum):
     LIGHTGREY = (119, 136, 153)
     PERU = (205, 133, 63)
     GOLD = (255, 215, 0)
-    AQUA = (0,255,255)
-    AQUAMARINE = (127,255,212)
+    AQUA = (0, 255, 255)
+    AQUAMARINE = (127, 255, 212)
 
 
 sound_music = {
@@ -58,18 +58,18 @@ def quit_pygame() -> None:
     pg.quit()
 
 
-def check_for_continue(event: pg.event.Event) -> True:
+def check_for_quit(event: pg.event.Event) -> bool:
     """Check if the user wants to end the simulation."""
-    running = True
     if event.type == pg.QUIT:
-        running = False
+        return True
     elif event.type == pg.KEYDOWN:
         if event.key == pg.K_ESCAPE:
-            running = False
-    return running
+            return True
+
+    return False
 
 
-def check_for_reset(event: pg.event.Event) -> True:
+def check_for_reset(event: pg.event.Event) -> bool:
     """Check if the user wants to reset the simulation."""
     if event.type == pg.KEYDOWN:
         if event.key == pg.K_SPACE:
@@ -83,7 +83,7 @@ class SimplePygame:
     def __init__(self, caption: str, width: int = 800, height: int = 600) -> None:
         pg.init()
         pg.mixer.init()
-        pg.mixer.music.set_volume(0.4)
+        pg.mixer.music.set_volume(0.3)
         self._screen = pg.display.set_mode((width, height))
         pg.display.set_caption(caption)
         self._clock = pg.time.Clock()
@@ -97,9 +97,20 @@ class SimplePygame:
 
     @property
     def all_texts(self) -> list[tuple[str, float, float, int, Color]]:
+        """List of texts to display in every loop. Contains tuples with
+        text, pos_x, pos_y, text_size, color."""
         return self._all_texts
 
     def add_text(self, text: str, x: float, y: float, size: int = 22, color: Color = Color.WHITE):
+        """Add a text to display in every loop.
+
+        Args:
+            text (str): The text to display.
+            x (int): The x coordinate of the upper left.
+            y (Union[int, float]): The y coordinate of the upper left.
+            size (int): The size of the text.
+            color (src.utilities.pygame_simple.Color): The color of the text.
+        """
         self._all_texts.append((text, (int(x), int(y)), size, color.value))
 
     @property
@@ -109,11 +120,11 @@ class SimplePygame:
 
     def loop(self, **update_kwargs) -> None:
         """Perform one loop of pygame. This updates and draws all sprites and texts."""
-        self._all_sprites.update(**update_kwargs)
         self._screen.fill(Color.BLACK.value)
+        self._all_sprites.update(**update_kwargs)
         self._all_sprites.draw(self._screen)
         for text_args in self._all_texts:
-            self._draw_text(*text_args)
+            self.draw_text(*text_args)
         pg.display.flip()
         self._clock.tick(FPS)
 
@@ -121,13 +132,23 @@ class SimplePygame:
         """Play a sound effect with key in `sound_effects`."""
         self._sound_effects[effect].play()
 
-    def _draw_text(
+    def draw_text(
         self,
         text: str,
-        pos: tuple[int, int],
-        size: int,
-        color: tuple[int, int, int],
+        pos: tuple[float, float],
+        size: int = 22,
+        color: tuple[int, int, int] = Color.WHITE.value,
     ) -> None:
+        """
+
+        Args:
+            text (str): The text to draw at pos.
+            pos (tuple[int, int]): x and y coordinates.
+            size (int): Size of the text to draw.
+                Defaults to 22.
+            color (tuple[int, int, int]): RGB color values.
+                Defaults to white.
+        """
         font = pg.font.Font(self._font, size)
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()

@@ -5,10 +5,7 @@ import src.utilities.pygame_simple as pygame_simple
 simulation = molecular_sim.molecule_main  # change to select simulation
 
 if __name__ == "__main__":
-    simulation()
-
-
-def do_reset():
-    """Quit and rerun simulation."""
+    reset = True
+    while reset:
+        reset = simulation()
     pygame_simple.quit_pygame()
-    simulation()
