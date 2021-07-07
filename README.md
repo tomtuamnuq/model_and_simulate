@@ -28,9 +28,11 @@ system of nonlinear differential equations is not in the book. An implementation
 *Runge-Kutta* procedure from *scipy.integrate* and *matplotlib* visualization produces a rotatable figure:
 ![lorenz attractor](model_and_simulate/chaos/pics/lorenz.JPG)
 
-Another interesting ode system corresponds to the Aizawa attractor. Formulas, parameters, and initial values come from [algosome](https://www.algosome.com/articles/aizawa-attractor-chaos.html).
+Another interesting ode system corresponds to the Aizawa attractor. Formulas, parameters, and initial values come from
+[algosome](https://www.algosome.com/articles/aizawa-attractor-chaos.html).
 However, the plot does look different:
 ![aizawa attractor](model_and_simulate/chaos/pics/aizawa.JPG)
+Maybe there is an error in the equations...
 
 ### Microscopic modeling of road traffic (coming next)
 Microscopic modeling of road traffic is the implementation of Chapter 8. 
@@ -47,6 +49,10 @@ This repo does not contain any solutions to exercises of the course.
 
 The Lorenz-Attractor equations are from [wikipedia](https://en.wikipedia.org/wiki/Lorenz_system):
 Lorenz, Edward Norton (1963). "Deterministic nonperiodic flow". Journal of the Atmospheric Sciences. 20 (2): 130–141. 
+
+The Aizawa-Attractor equations are from [algosome](https://www.algosome.com/articles/aizawa-attractor-chaos.html):
+Langford, William Finlay (1984). "NumericalStudies of Torus Bifurcations". 
+International Series of Numerical Mathematics. 70: 285–295.
 
 I searched [looperman](https://www.looperman.com/loops) to get some fancy music loops for pygame.
 I would like to thank Rasputin(Brisk Bass Sequence, Goa Trance Gated Vox), SUPERSAMPLE(KORG 2),
