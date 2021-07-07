@@ -12,14 +12,13 @@ rng = default_rng()  # keyword seed=SEED
 class ChaosSimulation:
     """Class for the actual simulation of a chaotic system."""
 
-    ode_method = "RK23"  # use Runge-Kutta procedure to solve differential equations
-
     def __init__(
         self,
         equation: Callable[[float, np.ndarray], np.ndarray],
         time_step: int = 30,
         dimensions: int = 0,
         start_point: Optional[np.ndarray] = None,
+        ode_method: str = "RK23",
     ):
         """
         Simulates a chaotic system of ordinary differential equations.
@@ -30,6 +29,8 @@ class ChaosSimulation:
             time_step (int): Step to perform per iteration.
             dimensions (int): Number of dimensions for data points.
             start_point (Union[None, None]): An initial data point.
+            ode_method(str): Integration method to use in `scipy.integrate.solve_ivp`
+                Defaults to Explicit Runge-Kutta method of order 3(2).
         """
         self._equation = equation
         self._time_step = time_step
@@ -41,6 +42,7 @@ class ChaosSimulation:
         self._start_point = start_point
         self._dimension = len(self._start_point)
         assert self._dimension == len(equation(0, self._start_point))  # sanity check
+        self._ode_method = ode_method
 
     def run_into_chaos(self, num_initial_steps: int = 100) -> tuple[Optional[np.ndarray], int]:
         """
@@ -100,7 +102,5 @@ class ChaosSimulation:
     def _solve_ode(
         self, start_point: np.ndarray, time_span: tuple[int, int]
     ) -> tuple[np.ndarray, bool]:
-        result = solve_ivp(
-            self._equation, time_span, start_point, method=ChaosSimulation.ode_method
-        )
+        result = solve_ivp(self._equation, time_span, start_point, method=self._ode_method)
         return result.y, result.success

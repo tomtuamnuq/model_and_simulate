@@ -28,6 +28,10 @@ system of nonlinear differential equations is not in the book. An implementation
 *Runge-Kutta* procedure from *scipy.integrate* and *matplotlib* visualization produces a rotatable figure:
 ![lorenz attractor](model_and_simulate/chaos/pics/lorenz.JPG)
 
+Another interesting ode system corresponds to the Aizawa attractor. Formulas, parameters, and initial values come from [algosome](https://www.algosome.com/articles/aizawa-attractor-chaos.html).
+However, the plot does look different:
+![aizawa attractor](model_and_simulate/chaos/pics/aizawa.JPG)
+
 ### Microscopic modeling of road traffic (coming next)
 Microscopic modeling of road traffic is the implementation of Chapter 8. 
 
