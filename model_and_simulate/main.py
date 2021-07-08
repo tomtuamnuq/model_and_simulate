@@ -16,7 +16,7 @@ matplotlib_simulations = {
     "chaos_aizawa": partial(chaos_sim.chaos_main, "aizawa", "c"),
 }
 
-simulation_key = "Molecule_Simulation"  # change to select simulation to run
+simulation_key = "Microscopic_Traffic"  # change to select simulation to run
 
 
 def pygame_main():

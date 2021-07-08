@@ -1,6 +1,6 @@
 """Module for classes `Section` and `Cell`."""
 from __future__ import annotations
-import numpy as np
+import math
 
 
 class Section:
@@ -11,10 +11,10 @@ class Section:
         self._cells = self._init_cells()
 
     def _init_cells(self) -> list[Cell]:
-        number_of_cells = np.ceil(self._density_max * self._length)
+        number_of_cells = int(math.ceil(self._density_max * self._length))
         cell_size = self._length / number_of_cells
         cells = [Cell(i, cell_size) for i in range(number_of_cells)]
-        return cells, cell_size
+        return cells
 
     @property
     def cells(self) -> list[Cell]:

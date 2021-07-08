@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Tuple
 import random
-import numpy as np
+import math
 from .section import Section
 from .vehicle import Vehicle
 from model_and_simulate.utilities.simulation import Simulation, SimulationParameters
@@ -35,8 +35,10 @@ class TrafficSimulation(Simulation):
     def _check_if_all_vehicles_set(self):
         return self._number_of_vehicles == len(self._vehicles)
 
-    def _init_vehicles(self, all_vehicles_at_once, occupation) -> tuple[list[Vehicle], int]:
-        number_of_vehicles = np.floor(occupation * self._section.max_cell_number)
+    def _init_vehicles(
+        self, all_vehicles_at_once: bool, occupation: float
+    ) -> tuple[list[Vehicle], int]:
+        number_of_vehicles = int(math.floor(occupation * self._section.max_cell_number))
         if all_vehicles_at_once:
             vehicles = self._place_all_vehicles(number_of_vehicles)
         else:
@@ -48,7 +50,7 @@ class TrafficSimulation(Simulation):
             # TODO place vehicles step by step every few iterations...
         return vehicles, number_of_vehicles
 
-    def _place_all_vehicles(self, number_of_vehicles) -> list[Vehicle]:
+    def _place_all_vehicles(self, number_of_vehicles: int) -> list[Vehicle]:
         vehicles = []
         cell_sample = random.sample(self._section.cells, number_of_vehicles)
         cell_sample = sorted(cell_sample, key=lambda elem: elem.number, reverse=True)
@@ -63,7 +65,20 @@ class TrafficSimulation(Simulation):
         return vehicles
 
     def do_step(self) -> None:
-        pass  # TODO implement
+        print("##################################################")
+        cell_string = ""
+        cell_string_empty = ""
+        for cell in self._section.cells:
+            cell_string += str(cell.number) + " "
+            if not cell.is_empty():
+                cell_string_empty += str(cell.number) + " "
+        print(cell_string)
+        print(cell_string_empty)
+        vehicle_string = ""
+        for vehicle in self._vehicles:
+            vehicle_string += str(vehicle.velocity) + " "
+        print(vehicle_string)
+
 
     @property
     def number_of_vehicles(self) -> int:

@@ -9,7 +9,7 @@ from model_and_simulate.utilities.simulation import (
     SimulationParameters,
 )
 from .traffic_simulation import TrafficSimulation
-from .traffic_start_screen import show_start_screen
+from .traffic_start_screen import TrafficStartScreen
 
 
 class TrafficVisualization(SimulationVisualization):
@@ -25,7 +25,7 @@ class TrafficVisualization(SimulationVisualization):
         play_music_loop(music)
         vehicle_sprites = self.simple_pygame.all_sprites
 
-
     def show_start_screen(self) -> tuple[SimulationParameters, bool, bool]:
         """Calls the implementation of traffic start screen."""
-        return show_start_screen(self.simple_pygame)
+        traffic_start_screen = TrafficStartScreen(self.simple_pygame)
+        return traffic_start_screen.show_start_screen()
