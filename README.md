@@ -21,7 +21,7 @@ Step size dt is the resolution of the algorithm in the numerical solution of the
 6 different distributions can be chosen to draw the initial molecule positions from:
 ![distributions](model_and_simulate/molecular_dynamics/pics/molecule_sim_cauchy_normal.JPG)
 
-### Attractors in Chaos theory (in progress)
+### Attractors in Chaos theory (almost finished)
 Chapter 12 describes chaotic systems and shows simulations as bifurcation diagrams. 
 One common attractor is the Lorenz-Attractor (Butterfly effect). The corresponding three-dimensional
 system of nonlinear differential equations is not in the book. An implementation with 
@@ -34,8 +34,9 @@ However, the plot does look different:
 ![aizawa attractor](model_and_simulate/chaos/pics/aizawa.JPG)
 Maybe there is an error in the equations...
 
-### Microscopic modeling of road traffic (coming next)
+### Microscopic modeling of road traffic (work in progress)
 Microscopic modeling of road traffic is the implementation of Chapter 8. 
+
 
 ## Acknowledgements
 I would like to acknowledge the work of Hans-Joachim Bungartz, Stefan Zimmer and Dirk Pflüger. 
