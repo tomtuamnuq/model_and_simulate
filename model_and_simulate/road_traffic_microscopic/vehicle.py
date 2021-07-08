@@ -10,22 +10,20 @@ rng = default_rng(seed=SEED)  # keyword seed=SEED
 
 class Vehicle:
     """This describes a stochastic cellular automata."""
+
     def __init__(
         self,
         ident: int,
-        cell: Cell,
-        position_max: int,
         velocity: int,
         velocity_max: int,
         dawdling_factor: float,
     ):
         self._ident = ident
-        self._cell = cell
-        self._position_max = position_max
         self._velocity = velocity
+        self._velocity_max = velocity_max
+        self._cell = None  # type: Optional[Cell]
         self._successor = None  # type: Optional[Vehicle]
         self._dawdling_factor = dawdling_factor
-        self._velocity_max = velocity_max
 
     @property
     def successor(self) -> Optional[Vehicle]:
@@ -44,7 +42,7 @@ class Vehicle:
 
     @property
     def position(self) -> int:
-        """The current cell number in units of cells."""
+        """The position in units of cell lengths."""
         return self._cell.number
 
     @property
@@ -54,12 +52,16 @@ class Vehicle:
 
     @velocity.setter
     def velocity(self, vel: int) -> None:
-        """The current velocity."""
+        """Setter for velocity."""
         self._velocity = vel
 
     def distance_to_successor(self, right_border: int) -> int:
         """Get the distance to the cell of the vehicle on the right side."""
-        distance = 0 if self._successor is None else self.successor.position - self.position - 1
+        distance = (
+            self._velocity_max
+            if self.successor is None
+            else self.successor.position - self.position - 1
+        )
         if distance < 0:
             distance = right_border + distance
         return distance
@@ -68,7 +70,6 @@ class Vehicle:
         self.velocity = min(self.velocity + 1, self._velocity_max)
 
     def _brake(self, distance: int) -> None:
-
         if self.velocity > distance:
             self.velocity = distance
 
@@ -87,8 +88,13 @@ class Vehicle:
             self._dawdle()
 
     def move(self, section: Section) -> None:
-        """Empty the current cell and move to the next cell."""
+        """Empty the current cell and move to the next cell on `section`."""
         if self.velocity > 0:
             self._cell.make_empty()
             self._cell = section.get_cell(self.position + self.velocity)
-            self._cell.place_vehicle()
+            self._cell.make_occupied()
+
+    def place_into_cell(self, cell: Cell):
+        """Puts this vehicle into `cell`."""
+        self._cell = cell
+        cell.make_occupied()

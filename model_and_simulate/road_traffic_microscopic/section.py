@@ -14,7 +14,11 @@ class Section:
         number_of_cells = np.ceil(self._density_max * self._length)
         cell_size = self._length / number_of_cells
         cells = [Cell(i, cell_size) for i in range(number_of_cells)]
-        return cells
+        return cells, cell_size
+
+    @property
+    def cells(self) -> list[Cell]:
+        return self._cells
 
     @property
     def length(self) -> float:
@@ -25,6 +29,7 @@ class Section:
         return len(self._cells) - 1
 
     def get_cell(self, number: int) -> Cell:
+        """Returns the cell with `number`."""
         if number > self.max_cell_number:
             number = number % self.max_cell_number
         return self._cells[number]
@@ -35,6 +40,10 @@ class Cell:
         self._number = number
         self._size = size
         self._empty = True  # type: bool
+
+    @property
+    def size(self) -> float:
+        return self._size
 
     @property
     def number(self) -> int:
@@ -50,5 +59,5 @@ class Cell:
     def make_empty(self) -> None:
         self._empty = True
 
-    def place_vehicle(self) -> None:
+    def make_occupied(self) -> None:
         self._empty = False
