@@ -95,6 +95,18 @@ class StartScreen(ABC):
         self.simple_pygame.loop(mouse_pos=pygame.mouse.get_pos())
         return running, reset
 
+    def create_default_items(self, col_w: int, row_h: int):
+        """Gets all sprites list and creates a start button on the upper right corner."""
+        menu_items = self.simple_pygame.all_sprites
+
+        def on_click_listener_start(*args):
+            """The callback function for start button."""
+            self.show_start = False
+
+        default_buttons = [SwitchButton((col_w * 2, row_h), (6 * col_w, row_h), text="Start")]
+        self.add_switch_buttons(default_buttons, menu_items, on_click_listener_start)
+        return menu_items, default_buttons
+
     @staticmethod
     def disable_other_buttons(clicked_button: SwitchButton, buttons: list[SwitchButton]):
         """Disable all the other buttons in the button list."""

@@ -1,10 +1,7 @@
 """Module for the molecule simulation menu."""
 import pygame
 
-from .molecule_simulation import (
-    distributions,
-    MoleculeParameters,
-)
+from .molecule_simulation import distributions, MoleculeParameters
 from model_and_simulate.utilities.pygame_button import SwitchButton, TextButton, Button
 from model_and_simulate.utilities.pygame_simple import Color
 from model_and_simulate.utilities.start_screen import StartScreen
@@ -15,10 +12,11 @@ class MoleculeStartScreen(StartScreen):
 
     def create_menu_items(self) -> tuple[int, int, MoleculeParameters, list[Button]]:
         """Creates the GUI buttons with MoleculeParameter logic."""
+
         simulation_parameters = MoleculeParameters()
-        menu_items = self.simple_pygame.all_sprites
         width, height = pygame.display.get_window_size()
         col_w, row_h = round(width / 8), round(height / 8)
+        menu_items, buttons = self.create_default_items(col_w, row_h)
         buttons_h: dict[SwitchButton, float] = {
             SwitchButton(
                 (col_w, row_h),
@@ -57,13 +55,6 @@ class MoleculeStartScreen(StartScreen):
         self.add_switch_buttons(
             buttons_distributions.keys(), menu_items, on_click_listener_distribution
         )
-
-        def on_click_listener_start(*args):
-            """The callback function for start button."""
-            self.show_start = False
-
-        button_start = SwitchButton((col_w * 2, row_h), (6 * col_w, row_h), text="Start")
-        self.add_switch_buttons([button_start], menu_items, on_click_listener_start)
 
         buttons_text_input: dict[TextButton, str] = {
             TextButton(
@@ -117,10 +108,9 @@ class MoleculeStartScreen(StartScreen):
             button.add_on_finish_listener(on_finish_input_listener)
             button.add_on_hover_listener(on_hover_text_listener)
             menu_items.add(button)
-        buttons = (
+        buttons += (
             list(buttons_h.keys())
             + list(buttons_distributions.keys())
-            + [button_start]
             + list(buttons_text_input.keys())
         )
         return col_w, row_h, simulation_parameters, buttons
