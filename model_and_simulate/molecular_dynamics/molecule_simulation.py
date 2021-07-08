@@ -4,7 +4,8 @@ from typing import Tuple
 import numpy as np
 from numpy.random import default_rng
 from .field import Field
-from ..utilities.coordinate_mapper import CoordinateMapper2D
+from model_and_simulate.utilities.coordinate_mapper import CoordinateMapper2D
+from model_and_simulate.utilities.simulation import Simulation, SimulationParameters
 
 # SEED = 1234
 rng = default_rng()  # keyword seed=SEED
@@ -21,7 +22,7 @@ distributions = {
 }  # type str[callable]
 
 
-class MoleculeSimulation:
+class MoleculeSimulation(Simulation):
     """Class for the actual simulation of molecules."""
 
     cut_off_factor = 4
@@ -142,7 +143,7 @@ class MoleculeSimulation:
 
 
 @dataclass
-class SimulationParameters:
+class MoleculeParameters(SimulationParameters):
     """Class for keeping track of the simulation parameters in menus."""
 
     num_molecules: int = 500

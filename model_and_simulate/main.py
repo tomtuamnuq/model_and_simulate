@@ -6,28 +6,31 @@ import road_traffic_microscopic.traffic_main as traffic_sim
 import model_and_simulate.utilities.pygame_simple as pygame_simple
 
 
-simulations = {
+pygame_simulations = {
+    "Molecule_Simulation": molecular_sim.MoleculeVisualization,
+    "Microscopic_Traffic": traffic_sim.traffic_main,
+}
+
+matplotlib_simulations = {
     "chaos_lorenz": partial(chaos_sim.chaos_main, "lorenz", "k"),
     "chaos_aizawa": partial(chaos_sim.chaos_main, "aizawa", "c"),
-    "molecular": molecular_sim.molecule_main,
-    "traffic": traffic_sim.traffic_main,
 }
-simulation_key = "traffic"  # change to select simulation to run
 
-pygame_simulations = [molecular_sim.molecule_main, traffic_sim.traffic_main]
+simulation_key = "Molecule_Simulation"  # change to select simulation to run
 
 
-def pygame_main(simulation_main):
+def pygame_main():
     """Runs the simulation within pygame logic."""
     reset = True
     while reset:
-        reset = simulation_main()
+        simulation = pygame_simulations[simulation_key](simulation_key)
+        reset = simulation.main()
     pygame_simple.quit_pygame()
 
 
 if __name__ == "__main__":
-    simulation = simulations[simulation_key]
-    if simulation in pygame_simulations:
-        pygame_main(simulation)
+    if simulation_key in pygame_simulations:
+        pygame_main()
     else:
-        simulation()
+        simulation_main = matplotlib_simulations[simulation_key]
+        simulation_main()

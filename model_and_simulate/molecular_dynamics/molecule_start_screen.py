@@ -2,7 +2,11 @@
 from typing import Optional, TypedDict
 import pygame
 
-from model_and_simulate.molecular_dynamics.molecule_simulation import distributions, SimulationParameters
+# TODO make imports relative
+from model_and_simulate.molecular_dynamics.molecule_simulation import (
+    distributions,
+    MoleculeParameters,
+)
 from model_and_simulate.utilities.pygame_button import SwitchButton, TextButton, Button
 from model_and_simulate.utilities.pygame_simple import (
     SimplePygame,
@@ -28,7 +32,7 @@ start_menu_status: StartMenuStatus = {
 }
 
 
-def show_start_screen(simple_pygame: SimplePygame) -> tuple[SimulationParameters, bool, bool]:
+def show_start_screen(simple_pygame: SimplePygame) -> tuple[MoleculeParameters, bool, bool]:
     """Invokes menu creation and runs the pygame loop."""
     buttons, simulation_parameters = initialize_menu(simple_pygame)
     running, reset = True, False
@@ -83,9 +87,9 @@ def initialize_menu(simple_pygame):
 
 def _create_menu_items(
     simple_pygame: SimplePygame,
-) -> tuple[int, int, SimulationParameters, list[Button]]:
+) -> tuple[int, int, MoleculeParameters, list[Button]]:
 
-    simulation_parameters = SimulationParameters()
+    simulation_parameters = MoleculeParameters()
     menu_items = simple_pygame.all_sprites
     width, height = pygame.display.get_window_size()
     col_w, row_h = round(width / 8), round(height / 8)

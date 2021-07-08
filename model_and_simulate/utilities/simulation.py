@@ -13,6 +13,8 @@ from model_and_simulate.utilities.pygame_simple import (
 
 
 class Simulation(ABC):
+    """Abstract base class for doing a simulation on a 2D area."""
+
     @property
     @abstractmethod
     def dim(self) -> Tuple[Tuple[int, int], Tuple[int, int]]:
@@ -24,6 +26,8 @@ class Simulation(ABC):
 
 
 class SimulationVisualization(ABC):
+    """Abstract base class to visualize a `Simulation` with pygame."""
+
     def __init__(self, title: str):
         self.simple_pygame = SimplePygame(title)
         self.simulation = None
@@ -31,20 +35,24 @@ class SimulationVisualization(ABC):
         self.coord_mapper = None
 
     @abstractmethod
-    def initialize_simulation(self, simulation_parameters: SimulationParameters) -> Simulation:
+    def initialize_simulation(self) -> Simulation:
+        """Creates the simulation object and sets it up."""
         pass
 
     @abstractmethod
     def initialize_visualization(self) -> None:
+        """Sets the pygame visualization up."""
         pass
 
     @abstractmethod
-    def show_start_screen(self) -> tuple[bool, bool]:
+    def show_start_screen(self) -> tuple[SimulationParameters, bool, bool]:
+        """Displays the start screen and collects the simulation parameters
+        as well as stop and reset control signals."""
         pass
 
     def main(self) -> bool:
         """Performs the simulation and returns reset signal."""
-        running, reset = self.show_start_screen()
+        self.simulation_parameters, running, reset = self.show_start_screen()
         if running:
             self.initialize()
         while running:
@@ -53,7 +61,7 @@ class SimulationVisualization(ABC):
 
     def initialize(self) -> None:
         """Init the simulation and pygame visualization."""
-        self.simulation = self.initialize_simulation(self.simulation_parameters)
+        self.simulation = self.initialize_simulation()
         width, height = pygame.display.get_window_size()
         display_dim = ((0, width), (0, height))
         self.coord_mapper = CoordinateMapper2D(*self.simulation.dim, *display_dim)
@@ -76,4 +84,6 @@ class SimulationVisualization(ABC):
 
 @dataclass
 class SimulationParameters(ABC):
+    """Abstract base class to use for simulation parameter setting in menus."""
+
     pass
