@@ -1,8 +1,6 @@
-"""Module with function to set parameters and run the molecule simulation."""
+"""Module with class to start the visualization and simulation of the `MoleculeSimulation`."""
 import dataclasses
-from model_and_simulate.utilities.pygame_simple import (
-    play_music_loop,
-)
+from model_and_simulate.utilities.pygame_simple import play_music_loop
 from model_and_simulate.utilities.simulation import (
     SimulationVisualization,
     Simulation,
@@ -10,7 +8,7 @@ from model_and_simulate.utilities.simulation import (
 )
 from .molecule_simulation import MoleculeSimulation
 from .molecule_sprite import Molecule
-from .molecule_start_screen import show_start_screen
+from .molecule_start_screen import MoleculeStartScreen
 
 
 class MoleculeVisualization(SimulationVisualization):
@@ -31,4 +29,5 @@ class MoleculeVisualization(SimulationVisualization):
 
     def show_start_screen(self) -> tuple[SimulationParameters, bool, bool]:
         """Calls the implementation of molecule start screen."""
-        return show_start_screen(self.simple_pygame)
+        molecule_start_screen = MoleculeStartScreen(self.simple_pygame)
+        return molecule_start_screen.show_start_screen()

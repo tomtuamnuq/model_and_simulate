@@ -1,14 +1,14 @@
 """Module to select which simulation to run."""
 from functools import partial
 import chaos.chaos_main as chaos_sim
-import model_and_simulate.molecular_dynamics.molecule_main as molecular_sim
-import road_traffic_microscopic.traffic_main as traffic_sim
+import model_and_simulate.molecular_dynamics.molecule_visualization as molecular_sim
+import road_traffic_microscopic.traffic_visualization as traffic_sim
 import model_and_simulate.utilities.pygame_simple as pygame_simple
 
 
 pygame_simulations = {
     "Molecule_Simulation": molecular_sim.MoleculeVisualization,
-    "Microscopic_Traffic": traffic_sim.traffic_main,
+    "Microscopic_Traffic": traffic_sim.TrafficVisualization,
 }
 
 matplotlib_simulations = {

@@ -5,7 +5,7 @@ import random
 import numpy as np
 from .section import Section
 from .vehicle import Vehicle
-from model_and_simulate.utilities.simulation import Simulation
+from model_and_simulate.utilities.simulation import Simulation, SimulationParameters
 
 
 class TrafficSimulation(Simulation):
@@ -75,7 +75,7 @@ class TrafficSimulation(Simulation):
 
 
 @dataclass
-class SimulationParameters:
+class TrafficParameters(SimulationParameters):
     """Class for keeping track of the simulation parameters in menus."""
 
     length: float = 2250
