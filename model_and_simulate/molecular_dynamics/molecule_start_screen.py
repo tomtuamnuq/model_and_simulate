@@ -97,7 +97,7 @@ class MoleculeStartScreen(StartScreen):
 
             self.read_input_to = None
 
-        on_hover_text = "Click and use BACKSPACE or ENTER"
+        on_hover_text = "Click and use Digits, BACKSPACE or ENTER"
 
         def on_hover_text_listener(*args):
             """The callback function for hovering text input buttons."""

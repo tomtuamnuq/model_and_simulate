@@ -11,9 +11,9 @@ class Field:
         """
         Create a field with `num_rows` * `num_columns` fields of size `cell_size`.
         Args:
-            num_rows (int):
-            num_columns (int):
-            cell_size (int):
+            num_rows (int): Number of rows in the grid structure.
+            num_columns (int): Number of columns in the grid structure.
+            cell_size (int): Length of the quadratic cells.
         """
         self.width = cell_size * num_columns
         self.height = cell_size * num_rows
