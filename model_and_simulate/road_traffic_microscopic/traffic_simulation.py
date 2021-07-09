@@ -62,6 +62,9 @@ class TrafficSimulation(Simulation):
             vehicle.successor = successor
             successor = vehicle
             vehicles.insert(0, vehicle)
+        # set the car on the left as successor of the car on the right
+        rightmost_vehicle = vehicles[-1]
+        rightmost_vehicle.successor = vehicles[0]
         return vehicles
 
     def do_step(self) -> None:
@@ -78,14 +81,19 @@ class TrafficSimulation(Simulation):
         for vehicle in self._vehicles:
             vehicle_string += str(vehicle.velocity) + " "
         print(vehicle_string)
-
+        for vehicle in self._vehicles:
+            vehicle.update_velocity(self._section.max_cell_number)
+        for vehicle in self._vehicles:
+            vehicle.move(self._section)
 
     @property
     def number_of_vehicles(self) -> int:
+        """The current number of vehicles placed on `self._section`."""
         return self._number_of_vehicles
 
     @property
     def vehicles(self) -> list[Vehicle]:
+        """The currently set vehicles."""
         return self._vehicles[: self.number_of_vehicles]
 
 

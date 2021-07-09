@@ -80,7 +80,8 @@ class Vehicle:
         self.velocity = max(self.velocity - 1, 0)
 
     def update_velocity(self, right_border: int) -> None:
-        """Perform rules of NaSch-Model to calculate velocity."""
+        """Perform rules of NaSch-Model to calculate velocity.
+        The right border is used to check for the distance."""
         self._accelerate()
         distance = self.distance_to_successor(right_border)
         self._brake(distance)
@@ -92,6 +93,8 @@ class Vehicle:
         if self.velocity > 0:
             self._cell.make_empty()
             self._cell = section.get_cell(self.position + self.velocity)
+            if not self._cell.is_empty(): # TODO remove check
+                raise ValueError(f"Vehicle {self.ident} placed on full cell {self._cell.number}")
             self._cell.make_occupied()
 
     def place_into_cell(self, cell: Cell):
