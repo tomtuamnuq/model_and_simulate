@@ -25,7 +25,7 @@ distributions = {
 class MoleculeSimulation(Simulation):
     """Class for the actual simulation of molecules."""
 
-    cut_off_factor = 4
+    cut_off_factor = 8  # two times the radius times 4
 
     def __init__(
         self,
