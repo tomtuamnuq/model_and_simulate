@@ -26,6 +26,7 @@ class MoleculeSimulation(Simulation):
     """Class for the actual simulation of molecules."""
 
     cut_off_factor = 8  # two times the radius times 4
+    min_distance_factor = 1 / 2  # limits electron-wave overlapping between two molecules
 
     def __init__(
         self,
@@ -50,6 +51,7 @@ class MoleculeSimulation(Simulation):
         """
         self._molecules = list(range(num_molecules))
         self._sigma = sigma
+        self._min_distance = MoleculeSimulation.min_distance_factor * sigma
         self.r_c = MoleculeSimulation.cut_off_factor * sigma
         self._field = Field(num_rows, num_columns, self.r_c)
         self._num_rows = num_rows
@@ -125,7 +127,7 @@ class MoleculeSimulation(Simulation):
 
     def _calc_force(self, u: int, v: int, pos_v: np.ndarray) -> None:
         r_uv = pos_v - self._positions[u]
-        r = max(np.linalg.norm(r_uv), self._sigma)
+        r = max(np.linalg.norm(r_uv), self._min_distance)
         if r <= self.r_c:
             force = 24 * (2 * r ** (-13) - r ** (-7)) * r_uv
             self._accelerations[u] += force
@@ -151,5 +153,5 @@ class MoleculeParameters(SimulationParameters):
     num_columns: int = 15
     sigma: int = 1
     distribution: str = "uniform"
-    time_step: float = 0.01
+    time_step: float = 0.001
     init_vel_range: tuple[int, int] = -10, 10

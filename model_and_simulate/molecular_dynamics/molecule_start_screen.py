@@ -24,7 +24,7 @@ class MoleculeStartScreen(StartScreen):
                 text=str(v),
                 in_and_active_color=(Color.HGREEN, Color.SILVER),
             ): v
-            for x, v in zip((1, 2, 3), (0.1, 0.01, 0.001))
+            for x, v in zip((1, 2, 3), (0.002, 0.001, 0.0005))
         }
         self.default_button_on(buttons_h, simulation_parameters.time_step)
 
