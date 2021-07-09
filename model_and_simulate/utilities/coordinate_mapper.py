@@ -44,6 +44,11 @@ class CoordinateMapper2D:
         """Maps source coordinates to destination coordinates."""
         return np.matmul(pos_sim, self._scale_matrix)
 
+    def scale_size_x(self, size_sim: float) -> float:
+        """Scales the given size to the visualization."""
+        length_sim = np.asarray([size_sim, 0])
+        return self.map_coordinates(length_sim)[0]
+
     def _calc_scale_matrix(self) -> np.ndarray:
         src_dim_x, src_dim_y = self._src_dim
         dst_dim_x, dst_dim_y = self._dst_dim

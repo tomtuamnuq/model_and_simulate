@@ -3,9 +3,9 @@ from enum import Enum
 from os import path
 
 import pygame as pg
+import pygame.display
 
 FONT_NAME = "arial"
-FPS = 30  # frames per second
 
 
 class Color(Enum):
@@ -77,6 +77,10 @@ def check_for_reset(event: pg.event.Event) -> bool:
     return False
 
 
+def get_window_resolution() -> [int, int]:
+    return pygame.display.get_window_size()
+
+
 class SimplePygame:
     """Performs basic pygame steps."""
 
@@ -94,6 +98,18 @@ class SimplePygame:
             for key, value in sound_effects.items()
         }
         self._all_texts = []
+        self._frames_per_second = 30
+
+    @property
+    def frames_per_second(self) -> int:
+        """The frames per second for pygame clock."""
+        return self._frames_per_second
+
+    @frames_per_second.setter
+    def frames_per_second(self, fps: int) -> None:
+        """Sets fps if fps > 0."""
+        if fps > 0:
+            self._frames_per_second = fps
 
     @property
     def all_texts(self) -> list[tuple[str, float, float, int, Color]]:
@@ -126,7 +142,7 @@ class SimplePygame:
         for text_args in self._all_texts:
             self.draw_text(*text_args)
         pg.display.flip()
-        self._clock.tick(FPS)
+        self._clock.tick(self.frames_per_second)
 
     def play_effect(self, effect: str) -> None:
         """Play a sound effect with key in `sound_effects`."""

@@ -14,6 +14,10 @@ from .molecule_start_screen import MoleculeStartScreen
 class MoleculeVisualization(SimulationVisualization):
     """A visualization of `MoleculeSimulation` in pygame."""
 
+    def update_visualization(self) -> None:
+        """Nothing to do."""
+        pass
+
     def initialize_simulation(self) -> Simulation:
         """Creates the molecule simulation object."""
         return MoleculeSimulation(*dataclasses.astuple(self.simulation_parameters))

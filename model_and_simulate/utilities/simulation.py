@@ -9,6 +9,7 @@ from model_and_simulate.utilities.pygame_simple import (
     SimplePygame,
     check_for_quit,
     check_for_reset,
+    get_window_resolution,
 )
 
 
@@ -45,6 +46,11 @@ class SimulationVisualization(ABC):
         pass
 
     @abstractmethod
+    def update_visualization(self) -> None:
+        """Update the pygame visualization stuff."""
+        pass
+
+    @abstractmethod
     def show_start_screen(self) -> tuple[SimulationParameters, bool, bool]:
         """Displays the start screen and collects the simulation parameters
         as well as stop and reset control signals."""
@@ -62,7 +68,7 @@ class SimulationVisualization(ABC):
     def initialize(self) -> None:
         """Init the simulation and pygame visualization."""
         self.simulation = self.initialize_simulation()
-        width, height = pygame.display.get_window_size()
+        width, height = get_window_resolution()
         display_dim = ((0, width), (0, height))
         self.coord_mapper = CoordinateMapper2D(*self.simulation.dim, *display_dim)
         self.simple_pygame.all_sprites.empty()
@@ -78,6 +84,7 @@ class SimulationVisualization(ABC):
                 running = False
                 reset = True
         self.simulation.do_step()
+        self.update_visualization()
         self.simple_pygame.loop()
         return running, reset
 
