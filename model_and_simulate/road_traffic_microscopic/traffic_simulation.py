@@ -68,6 +68,9 @@ class TrafficSimulation(Simulation):
         return vehicles
 
     def do_step(self) -> None:
+        if not self._all_vehicles_set:
+            # set another vehicle on the road
+            self._all_vehicles_set = self._check_if_all_vehicles_set()
         print("##################################################")
         cell_string = ""
         cell_string_empty = ""
@@ -81,10 +84,13 @@ class TrafficSimulation(Simulation):
         for vehicle in self._vehicles:
             vehicle_string += str(vehicle.velocity) + " "
         print(vehicle_string)
+
         for vehicle in self._vehicles:
             vehicle.update_velocity(self._section.max_cell_number)
         for vehicle in self._vehicles:
             vehicle.move(self._section)
+
+
 
     @property
     def number_of_vehicles(self) -> int:
@@ -96,12 +102,16 @@ class TrafficSimulation(Simulation):
         """The currently set vehicles."""
         return self._vehicles[: self.number_of_vehicles]
 
+    @property
+    def section(self) -> Section:
+        return self._section
+
 
 @dataclass
 class TrafficParameters(SimulationParameters):
     """Class for keeping track of the simulation parameters in menus."""
 
-    length: float = 2250
-    occupation: float = 0.3
-    dawdling_factor: float = 0.2
-    all_vehicles_at_once: bool = True
+    length: float = 2250 # 2250 default 3500 max 100 min
+    occupation: float = 0.5 # 0.2 default 1 max 0.1 min
+    dawdling_factor: float = 0.2 # 0.2 default 1 max and 0.1 min
+    all_vehicles_at_once: bool = True # True default

@@ -24,6 +24,10 @@ class Section:
         return self._cells
 
     @property
+    def cell_size(self) -> float:
+        return self._cells[0].size
+
+    @property
     def length(self) -> float:
         """The total length."""
         return self._length

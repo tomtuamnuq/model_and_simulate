@@ -93,7 +93,7 @@ class Vehicle:
         if self.velocity > 0:
             self._cell.make_empty()
             self._cell = section.get_cell(self.position + self.velocity)
-            if not self._cell.is_empty(): # TODO remove check
+            if not self._cell.is_empty():  # TODO remove check
                 raise ValueError(f"Vehicle {self.ident} placed on full cell {self._cell.number}")
             self._cell.make_occupied()
 
