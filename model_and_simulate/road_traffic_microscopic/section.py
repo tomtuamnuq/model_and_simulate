@@ -7,6 +7,13 @@ class Section:
     """Describes a road section with cells of equal size placed at equal intervals."""
 
     def __init__(self, length: float, velocity_max: int, density_max: float):
+        """
+
+        Args:
+            length (int): The total length. It is the width on the x-Axis.
+            velocity_max (int): The maximum allowed velocity on the road.
+            density_max (float): The maximum allowed density of vehicles on the road.
+        """
         self._length = length
         self._velocity_max = velocity_max
         self._density_max = density_max
@@ -25,6 +32,7 @@ class Section:
 
     @property
     def cell_size(self) -> float:
+        """Length of each cell. It is the same for all cells and equals width and height."""
         return self._cells[0].size
 
     @property
@@ -45,9 +53,15 @@ class Section:
 
 
 class Cell:
-    """A line item."""
+    """A line item to use as a discretization of an instance of `Section`."""
 
     def __init__(self, number: int, size: float):
+        """
+
+        Args:
+            number (int): The number of positioning this cell.
+            size (float): The size of in meters. It equals width and height.
+        """
         self._number = number
         self._size = size
         self._empty = True  # type: bool

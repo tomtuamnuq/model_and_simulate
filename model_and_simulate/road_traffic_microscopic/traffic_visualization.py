@@ -49,7 +49,7 @@ class TrafficVisualization(SimulationVisualization):
         )
 
     def update_visualization(self) -> None:
-        """TODO add docs."""
+        """Redraws the dynamic section on top and draws a new section."""
         if self._section_pos_y > self._section_pos_y_max:
             self._section_pos_y = self._init_section_pos_y()
             self.simple_pygame.all_sprites.empty()

@@ -13,12 +13,20 @@ class Vehicle:
 
     def __init__(
         self,
-        ident: int,
+        identity: int,
         velocity: int,
         velocity_max: int,
         dawdling_factor: float,
     ):
-        self._ident = ident
+        """
+
+        Args:
+            identity (int): Non changeable identification number.
+            velocity (int): The initial velocity along the x-Axis.
+            velocity_max (int): The maximum allowed velocity of this vehicle.
+            dawdling_factor (float): The probability in [0, 1] for dawdling.
+        """
+        self._identity = identity
         self._velocity = velocity
         self._velocity_max = velocity_max
         self._cell = None  # type: Optional[Cell]
@@ -36,9 +44,9 @@ class Vehicle:
         self._successor = successor
 
     @property
-    def ident(self) -> int:
+    def identity(self) -> int:
         """The identification number."""
-        return self._ident
+        return self._identity
 
     @property
     def position(self) -> int:
@@ -93,8 +101,6 @@ class Vehicle:
         if self.velocity > 0:
             self._cell.make_empty()
             self._cell = section.get_cell(self.position + self.velocity)
-            if not self._cell.is_empty():  # TODO remove check
-                raise ValueError(f"Vehicle {self.ident} placed on full cell {self._cell.number}")
             self._cell.make_occupied()
 
     def place_into_cell(self, cell: Cell):

@@ -78,6 +78,7 @@ def check_for_reset(event: pg.event.Event) -> bool:
 
 
 def get_window_resolution() -> [int, int]:
+    """Returns the current width and height of the pygame display."""
     return pygame.display.get_window_size()
 
 

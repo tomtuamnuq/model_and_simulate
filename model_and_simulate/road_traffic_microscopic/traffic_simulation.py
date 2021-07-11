@@ -54,7 +54,6 @@ class TrafficSimulation(Simulation):
         self, all_vehicles_at_once: bool, occupation: float
     ) -> tuple[list[Vehicle], int]:
         number_of_vehicles = int(math.floor(occupation * self._section.max_cell_number))
-        assert number_of_vehicles > 1  # TODO check possible parameters
         if all_vehicles_at_once:
             vehicles = self._place_all_vehicles(number_of_vehicles)
         else:
@@ -141,7 +140,7 @@ class TrafficSimulation(Simulation):
 class TrafficParameters(SimulationParameters):
     """Class for keeping track of the simulation parameters in menus."""
 
-    length: int = 2250  # 2250 default 3500 max 100 min
-    occupation: float = 0.2  # 0.2 default 1 max 0.1 min
-    dawdling_factor: float = 0.2  # 0.2 default 1 max and 0.1 min
+    length: int = 3500  # 2250 default 3500 max 300 min
+    occupation: float = 0.5  # 0.2 default 0.9 max 0.1 min
+    dawdling_factor: float = 0.9  # 0.2 default 0.9 max and 0.1 min
     all_vehicles_at_once: bool = True  # True default
