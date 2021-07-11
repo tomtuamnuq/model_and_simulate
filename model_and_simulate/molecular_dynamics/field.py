@@ -43,14 +43,11 @@ class Field:
     ) -> tuple[list[list[int]], list[Optional[np.ndarray]]]:
         """Gives the 4 cells which are right or below the specified cell and the cell itself.
         The Tuple contains the cells and optional displacement vectors for border cells."""
-        if i < 1 or i > len(self._cells) - 2 or j < 1 or j > len(self._cells[1]) - 2:
-            raise ValueError(f"The specified indices {i=}, {j=} are invalid.")  # TODO remove
-        else:
-            relevant_cells = self._cells[i][j : j + 2] + self._cells[i + 1][j - 1 : j + 2]
-            displacements = (
-                self._displacements[i][j : j + 2] + self._displacements[i + 1][j - 1 : j + 2]
-            )
-            return relevant_cells, displacements
+        relevant_cells = self._cells[i][j : j + 2] + self._cells[i + 1][j - 1 : j + 2]
+        displacements = (
+            self._displacements[i][j : j + 2] + self._displacements[i + 1][j - 1 : j + 2]
+        )
+        return relevant_cells, displacements
 
     def get_cell(self, i: int, j: int) -> list[int]:
         """Gives the cell with the specified indices."""
@@ -77,7 +74,7 @@ class Field:
         Returns:
             list[list[list[int]]]: 2D-Area with empty lists as cells
         """
-        displ = []
+        displacement = []
         for i in range(num_rows + 2):
             row = []
             if i == 0:
@@ -98,9 +95,9 @@ class Field:
                     d = np.asarray([d_x, d_y])
 
                 row.append(d)
-            displ.append(row)
+            displacement.append(row)
 
-        return displ
+        return displacement
 
     @staticmethod
     def init_cells(num_rows: int, num_columns: int) -> list[list[list[int]]]:

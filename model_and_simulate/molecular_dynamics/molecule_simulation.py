@@ -7,8 +7,7 @@ from .field import Field
 from model_and_simulate.utilities.coordinate_mapper import CoordinateMapper2D
 from model_and_simulate.utilities.simulation import Simulation, SimulationParameters
 
-# SEED = 1234
-rng = default_rng()  # keyword seed=SEED
+rng = default_rng()
 
 distributions = {
     "uniform": rng.uniform,
