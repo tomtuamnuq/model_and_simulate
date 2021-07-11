@@ -43,7 +43,10 @@ class StartScreen(ABC):
     @abstractmethod
     def create_menu_texts(col_w: int, row_h: int) -> list:
         """Create the raw texts for the start menu. This texts are just drawn, with no logic."""
-        pass
+        menu_texts = [
+            ("Press ESC to quit or SPACE to reset simulation", (5, 5)),
+        ]
+        return menu_texts
 
     def show_start_screen(self) -> tuple[SimulationParameters, bool, bool]:
         """Invokes menu creation and runs the pygame loop."""

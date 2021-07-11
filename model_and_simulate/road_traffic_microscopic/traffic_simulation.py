@@ -45,6 +45,7 @@ class TrafficSimulation(Simulation):
 
     @property
     def section(self) -> Section:
+        """Returns the section instance that is simulated."""
         return self._section
 
     def _check_if_all_vehicles_set(self):
@@ -134,13 +135,11 @@ class TrafficSimulation(Simulation):
             vehicle_predecessor.successor = vehicle_to_place
 
 
-
-
 @dataclass
 class TrafficParameters(SimulationParameters):
     """Class for keeping track of the simulation parameters in menus."""
 
-    length: int = 3500  # 2250 default 3500 max 300 min
-    occupation: float = 0.5  # 0.2 default 0.9 max 0.1 min
-    dawdling_factor: float = 0.9  # 0.2 default 0.9 max and 0.1 min
+    length: int = 2250  # 2250 default 3500 max 300 min
+    occupation: float = 0.2  # 0.2 default 0.99 max 0.10 min
+    dawdling_factor: float = 0.2  # 0.2 default 0.99 max and 0.00 min
     all_vehicles_at_once: bool = True  # True default

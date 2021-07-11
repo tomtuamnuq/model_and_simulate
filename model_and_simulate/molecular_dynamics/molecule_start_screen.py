@@ -119,10 +119,10 @@ class MoleculeStartScreen(StartScreen):
     def create_menu_texts(col_w: int, row_h: int) -> list:
         """Gets the raw texts for the start menu. This texts are just drawn, with no logic."""
         bigger_text = 25
-        menu_texts = [
+        menu_texts = StartScreen.create_menu_texts(col_w, row_h)
+        menu_texts += [
             ("step size dt", (0, row_h, 20, Color.HGREEN)),
             ("position distribution", (0, 3.5 * row_h, bigger_text, Color.RED)),
-            ("Press ESC to quit or SPACE to reset simulation", (5, 5)),
         ]
         y = 3
         for text, limit in zip(
