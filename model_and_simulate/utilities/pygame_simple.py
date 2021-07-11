@@ -112,10 +112,15 @@ class SimplePygame:
             self._frames_per_second = fps
 
     @property
-    def all_texts(self) -> list[tuple[str, float, float, int, Color]]:
+    def all_texts(self) -> list[tuple[str, tuple[float, float], int, Color]]:
         """List of texts to display in every loop. Contains tuples with
         text, pos_x, pos_y, text_size, color."""
         return self._all_texts
+
+    def set_text(self, text_number: int, text: str):
+        """Sets a specific text in `self.all_texts`"""
+        _, pos, size, color = self.all_texts[text_number]
+        self.all_texts[text_number] = text, pos, size, color
 
     def add_text(self, text: str, x: float, y: float, size: int = 22, color: Color = Color.WHITE):
         """Add a text to display in every loop.

@@ -19,11 +19,16 @@ class SectionSprite(pygame.sprite.Sprite):
         empty_and_filled_color: tuple[Color, Color] = (Color.LIGHTGREY, Color.GOLD),
         one_time_drawing: bool = False,
     ):
-        """TODO add docstring
-
+        """
         Args:
             mapper (CoordinateMapper2D): An instance to use for position mapping.
             section (Section): The `Section` instance to visualize.
+            pos_y (int): The position on the y-Axis to draw.
+            height (int): The height of this section on the y-Axis.
+            empty_and_filled_color (Tuple[Color, Color]): The colors to use
+                for empty and filled cells. Defaults to (Color.LIGHTGREY, Color.GOLD).
+            one_time_drawing (bool): Set whether the section should be redrawn in `update`.
+
         """
         super(SectionSprite, self).__init__()
         self.mapper = mapper
@@ -48,6 +53,7 @@ class SectionSprite(pygame.sprite.Sprite):
             self._draw_cells()
 
     def update(self):
+        """Draw the occupied cells."""
         if not self._one_time_drawing:
             self._draw_cells()
 

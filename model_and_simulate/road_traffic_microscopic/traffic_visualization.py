@@ -15,10 +15,12 @@ from .section_sprite import SectionSprite
 class TrafficVisualization(SimulationVisualization):
     """A visualization of `TrafficSimulation` in pygame."""
 
+    section_height = 8  # number of pixels per Section on y-Axis
+
     def __init__(self, title: str):
         super(TrafficVisualization, self).__init__(title)
-        self._section_height = 8
-        self._section_pos_y_max = get_window_resolution()[1]
+        self._section_height = TrafficVisualization.section_height
+        self._section_pos_y_max = get_window_resolution()[1] - 3 * self._section_height
         self._section_pos_y = self._init_section_pos_y()
         self._dynamic_section_sprite = None
 
@@ -39,6 +41,12 @@ class TrafficVisualization(SimulationVisualization):
             self.coord_mapper, self.simulation.section, 0, 3 * self._section_height
         )
         self.simple_pygame.all_sprites.add(self._dynamic_section_sprite)
+        self.simple_pygame.add_text("Number of vehicles", 0, self._section_pos_y_max - 10, 10)
+        self.simple_pygame.add_text(
+            "0",
+            0,
+            self._section_pos_y_max + self._section_height - 10,
+        )
 
     def update_visualization(self) -> None:
         """TODO add docs."""
@@ -55,8 +63,9 @@ class TrafficVisualization(SimulationVisualization):
         )
         self.simple_pygame.all_sprites.add(section_sprite)
         self._section_pos_y += self._section_height
+        self.simple_pygame.set_text(1, str(self.simulation.number_of_vehicles))
 
     def show_start_screen(self) -> tuple[SimulationParameters, bool, bool]:
-        """Calls the implementation of traffic start screen."""
+        """Calls the implementation of the traffic start screen."""
         traffic_start_screen = TrafficStartScreen(self.simple_pygame)
         return traffic_start_screen.show_start_screen()
