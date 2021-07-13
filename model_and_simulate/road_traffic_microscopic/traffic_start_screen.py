@@ -64,7 +64,10 @@ class TrafficStartScreen(StartScreen):
             simulation_par = buttons_text_input[text_button]
             old_value = getattr(simulation_parameters, simulation_par)
             if text_button.text == "":
-                text_button.text = str(old_value)
+                if simulation_par == "length":
+                    text_button.text = str(old_value)
+                else:
+                    text_button.text = str(old_value*100)[:2]
             else:
                 user_value = int(text_button.text)
                 if simulation_par == "length":
@@ -101,7 +104,7 @@ class TrafficStartScreen(StartScreen):
         menu_texts = StartScreen.create_menu_texts(col_w, row_h)
         y = 3
         for text, limit in zip(("total density", "dawdling probability"), (10, 0)):
-            menu_texts.append((text, (4 * col_w, y * row_h + row_h / 2)))
+            menu_texts.append((text, (3.4 * col_w, y * row_h + row_h / 2)))
             menu_texts.append((f">= {limit:0>2d} %", (7 * col_w, y * row_h + row_h / 2)))
             y += 1
         menu_texts += [

@@ -9,7 +9,7 @@ of the presented models in Python with visualization in pygame or with matplotli
 The folder src contains individual projects.  All simulations have an individual main method. 
 Use the method with *model_and_simulate/main*
 
-### Moleculardynamics (finished)
+### Moleculardynamics
 Moleculardynamics is the implementation of Chapter 13. As model the *Lennard-Jones Potential*
 is used to get forces (attraction and repulsion) between all molecules.
 The accelerations get calculated by using the *Velocity-Störmer-Verlet* algorithm.
@@ -21,7 +21,7 @@ Step size dt is the resolution of the algorithm in the numerical solution of the
 6 different distributions can be chosen to draw the initial molecule positions from:
 ![distributions](model_and_simulate/molecular_dynamics/pics/molecule_sim_cauchy_normal.JPG)
 
-### Attractors in Chaos theory (almost finished)
+### Attractors in Chaos theory
 Chapter 12 describes chaotic systems and shows simulations as bifurcation diagrams. 
 One common attractor is the Lorenz-Attractor (Butterfly effect). The corresponding three-dimensional
 system of nonlinear differential equations is not in the book. An implementation with 
@@ -34,9 +34,18 @@ However, the plot does look different:
 ![aizawa attractor](model_and_simulate/chaos/pics/aizawa.JPG)
 Maybe there is an error in the equations...
 
-### Microscopic modeling of road traffic (work in progress)
-Microscopic modeling of road traffic is the implementation of Chapter 8. 
+### Microscopic modeling of road traffic
+Microscopic modeling of road traffic is the implementation of Chapter 8. The rules of NaSch-Model describe 
+the movement of cellular automatas on a road. Roads are only one-dimensional, collision-free, and all vehicles have
+equal characteristics such as length, dawdling factors, or maximum velocities.
 
+The density of the traffic on the road as well as the probability for dawdling can be set in a Pygame GUI. Furthermore,
+the total length of the road is settable. The implementation can simulate up to 461 cars. 
+
+A Pygame visualization shows a 2-D plot in real-time, which is the section on the x-Axis over time:
+![Traffic Simulation](model_and_simulate/road_traffic_microscopic/pics/traffic.JPG)
+
+It shows the same traits as Figures 8.4 - 8.7 in Chapter 8 of the book.
 
 ## Acknowledgements
 I would like to acknowledge the work of Hans-Joachim Bungartz, Stefan Zimmer and Dirk Pflüger. 

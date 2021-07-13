@@ -96,28 +96,12 @@ class TrafficSimulation(Simulation):
         if not self._all_vehicles_set:
             self._place_one_vehicle()
             self._all_vehicles_set = self._check_if_all_vehicles_set()
-
-        print("##################################################")
-        cell_string = ""
-        cell_string_empty = ""
-        for cell in self._section.cells:
-            cell_string += str(cell.number) + " "
-            if not cell.is_empty():
-                cell_string_empty += str(cell.number) + " "
-        print(cell_string)
-        print(cell_string_empty)
-        vehicle_string = ""
-        for vehicle in self._vehicles:
-            vehicle_string += str(vehicle.velocity) + " "
-        print(vehicle_string)
-
         for vehicle in self.vehicles:
             vehicle.update_velocity(self._section.max_cell_number)
         for vehicle in self.vehicles:
             vehicle.move(self._section)
 
     def _place_one_vehicle(self) -> None:
-        print(self._number_of_vehicles)
         max_distance = 0
         vehicle_predecessor = None
         for vehicle in self.vehicles:
