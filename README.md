@@ -6,8 +6,8 @@ It describes the modeling and simulation ascpects. But it gives only some implem
 To further dive into the simulations, this repo holds implementations
 of the presented models in Python with visualization in pygame or with matplotlib. 
 
-The folder src contains individual projects.  All simulations have an individual main method. 
-Use the method with *model_and_simulate/main*
+The folder model_and_simulate contains individual projects.  All simulations start from a single menu. 
+Simply run the *model_and_simulate/main* script to start the GUI.
 
 ### Moleculardynamics
 Moleculardynamics is the implementation of Chapter 13. As model the *Lennard-Jones Potential*
@@ -17,7 +17,9 @@ To avoid quadratic runtime scaling, a *Linked-Cells-Datastructure* is implemente
 
 The simulation has a menu to set parameters such as number of molecules, molecule radius (Sigma), and the Cell grid structure:
 ![start screen](model_and_simulate/molecular_dynamics/pics/molecule_sim_start_uni.JPG)
+
 Step size dt is the resolution of the algorithm in the numerical solution of the equations of motion.
+
 6 different distributions can be chosen to draw the initial molecule positions from:
 ![distributions](model_and_simulate/molecular_dynamics/pics/molecule_sim_cauchy_normal.JPG)
 

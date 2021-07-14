@@ -25,6 +25,7 @@ if __name__ == "__main__":
             if simulation_key in pygame_simulations:
                 running = run_pygame_main()
             else:
+                print("Start producing the attractor. \n Please wait for matplotlib output.")
                 simulation_main = matplotlib_simulations[simulation_key]
                 simulation_main()
     pygame_simple.quit_pygame()
