@@ -6,9 +6,9 @@ import pygame
 
 from utilities.pygame_button import SwitchButton
 from utilities.pygame_simple import SimplePygame, check_for_quit, get_window_resolution
+from utilities.start_screen import StartScreen
 
 import chaos.chaos_main as chaos_sim
-
 import model_and_simulate.molecular_dynamics.molecule_visualization as molecular_sim
 import road_traffic_microscopic.traffic_visualization as traffic_sim
 
@@ -23,7 +23,7 @@ matplotlib_simulations = {
 }
 
 
-class BaseStartScreen:
+class BaseStartScreen(StartScreen):
     """Start menu to select simulations."""
 
     def __init__(self):
@@ -42,7 +42,6 @@ class BaseStartScreen:
                 (col_w, row_h),
                 (x * col_w, y * row_h),
                 text=v,
-
             ): v
             for x, y, v in zip(
                 chain(range(len(pygame_simulations)), range(len(matplotlib_simulations))),
@@ -82,8 +81,6 @@ class BaseStartScreen:
         return running
 
     @staticmethod
-    def add_switch_buttons(buttons, menu_items: pygame.sprite.Group, on_click_listener: callable):
-        """Add on click callback function and buttons."""
-        for button in buttons:
-            button.add_on_click_listener(on_click_listener)
-            menu_items.add(button)
+    def create_menu_texts(col_w: int, row_h: int) -> list:
+        """No texts to draw."""
+        pass

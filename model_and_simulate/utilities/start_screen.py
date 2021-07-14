@@ -16,8 +16,56 @@ from .pygame_simple import (
 from .simulation import SimulationParameters
 
 
+class StartScreen(ABC):
+    """Abstract base class for pygame start screens."""
 
-class SimulationStartScreen(ABC):
+    @abstractmethod
+    def create_menu_items(self) -> tuple[int, int, SimulationParameters, list[Button]]:
+        """Create all buttons and GUI items with logic."""
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def create_menu_texts(col_w: int, row_h: int) -> list:
+        """Create the raw texts for the start menu. This texts are just drawn, with no logic."""
+        pass
+
+    def show_start_screen(self):
+        """Invokes menu creation and runs the pygame loop."""
+        pass
+
+    def do_start_screen_loop(self):
+        """Checks all user input events in this loop."""
+        pass
+
+    @staticmethod
+    def disable_other_buttons(clicked_button: SwitchButton, buttons: list[SwitchButton]):
+        """Disable all the other buttons in the button list."""
+        for other_button in buttons:
+            if other_button != clicked_button:
+                other_button.on = False
+            else:
+                # keep button active
+                if not clicked_button.on:
+                    clicked_button.on = True
+
+    @staticmethod
+    def default_button_on(buttons: dict, default):
+        """Activate one button with default value."""
+        for button, value in buttons.items():
+            if value == default:
+                button.on = True
+                return
+
+    @staticmethod
+    def add_switch_buttons(buttons, menu_items: pygame.sprite.Group, on_click_listener: callable):
+        """Add on click callback function and buttons."""
+        for button in buttons:
+            button.add_on_click_listener(on_click_listener)
+            menu_items.add(button)
+
+
+class SimulationStartScreen(StartScreen, ABC):
     """Abstract base class for pygame start screens for simulation visualizations."""
 
     music = "menu_light"  # type: str
@@ -115,29 +163,3 @@ class SimulationStartScreen(ABC):
         self.add_switch_buttons(default_buttons[:1], menu_items, on_click_listener_start)
         self.add_switch_buttons(default_buttons[1:], menu_items, on_click_listener_back)
         return menu_items, default_buttons
-
-    @staticmethod
-    def disable_other_buttons(clicked_button: SwitchButton, buttons: list[SwitchButton]):
-        """Disable all the other buttons in the button list."""
-        for other_button in buttons:
-            if other_button != clicked_button:
-                other_button.on = False
-            else:
-                # keep button active
-                if not clicked_button.on:
-                    clicked_button.on = True
-
-    @staticmethod
-    def default_button_on(buttons: dict, default):
-        """Activate one button with default value."""
-        for button, value in buttons.items():
-            if value == default:
-                button.on = True
-                return
-
-    @staticmethod
-    def add_switch_buttons(buttons, menu_items: pygame.sprite.Group, on_click_listener: callable):
-        """Add on click callback function and buttons."""
-        for button in buttons:
-            button.add_on_click_listener(on_click_listener)
-            menu_items.add(button)
