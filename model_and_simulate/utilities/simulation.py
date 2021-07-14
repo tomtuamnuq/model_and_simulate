@@ -51,19 +51,21 @@ class SimulationVisualization(ABC):
         pass
 
     @abstractmethod
-    def show_start_screen(self) -> tuple[SimulationParameters, bool, bool]:
+    def show_start_screen(self) -> tuple[SimulationParameters, bool, bool, bool]:
         """Displays the start screen and collects the simulation parameters
-        as well as stop and reset control signals."""
+        as well as quit, reset, and back_to_start control signals."""
         pass
 
-    def main(self) -> bool:
-        """Performs the simulation and returns reset signal."""
-        self.simulation_parameters, running, reset = self.show_start_screen()
+    def main(self) -> tuple[bool, bool]:
+        """Performs the simulation and returns reset and go back to start signals."""
+        self.simulation_parameters, running, reset, back_to_main_menu = self.show_start_screen()
+        if back_to_main_menu:
+            return reset, True
         if running:
             self.initialize()
         while running:
             running, reset = self.do_simulation_loop()
-        return reset
+        return reset, False
 
     def initialize(self) -> None:
         """Init the simulation and pygame visualization."""

@@ -3,18 +3,18 @@ import pygame
 
 from .molecule_simulation import distributions, MoleculeParameters
 from model_and_simulate.utilities.pygame_button import SwitchButton, TextButton, Button
-from model_and_simulate.utilities.pygame_simple import Color
-from model_and_simulate.utilities.start_screen import StartScreen
+from model_and_simulate.utilities.pygame_simple import Color, get_window_resolution
+from model_and_simulate.utilities.start_screen import SimulationStartScreen
 
 
-class MoleculeStartScreen(StartScreen):
+class MoleculeStartScreen(SimulationStartScreen):
     """The start screen for `MoleculeSimulation`."""
 
     def create_menu_items(self) -> tuple[int, int, MoleculeParameters, list[Button]]:
         """Creates the GUI buttons with MoleculeParameter logic."""
 
         simulation_parameters = MoleculeParameters()
-        width, height = pygame.display.get_window_size()
+        width, height = get_window_resolution()
         col_w, row_h = round(width / 8), round(height / 8)
         menu_items, buttons = self.create_default_items(col_w, row_h)
         buttons_h: dict[SwitchButton, float] = {
@@ -42,7 +42,7 @@ class MoleculeStartScreen(StartScreen):
                 text=v,
                 in_and_active_color=(Color.RED, Color.SILVER),
             ): v
-            for x, y, v in zip((0, 1, 0, 1, 0, 1), (4, 4, 5, 5, 6, 6), distributions.keys())
+            for x, y, v in zip((0, 1, 0, 1, 0, 1), (3, 3, 4, 4, 5, 5), distributions.keys())
         }
         self.default_button_on(buttons_distributions, simulation_parameters.distribution)
 
@@ -119,10 +119,10 @@ class MoleculeStartScreen(StartScreen):
     def create_menu_texts(col_w: int, row_h: int) -> list:
         """Gets the raw texts for the start menu. This texts are just drawn, with no logic."""
         bigger_text = 25
-        menu_texts = StartScreen.create_menu_texts(col_w, row_h)
+        menu_texts = SimulationStartScreen.create_menu_texts(col_w, row_h)
         menu_texts += [
             ("step size dt", (0, row_h, 20, Color.HGREEN)),
-            ("position distribution", (0, 3.5 * row_h, bigger_text, Color.RED)),
+            ("position distribution", (0, 2.5 * row_h, bigger_text, Color.RED)),
         ]
         y = 3
         for text, limit in zip(

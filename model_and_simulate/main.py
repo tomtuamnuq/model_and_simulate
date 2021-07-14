@@ -1,36 +1,30 @@
 """Module to select which simulation to run."""
-from functools import partial
-import chaos.chaos_main as chaos_sim
-import model_and_simulate.molecular_dynamics.molecule_visualization as molecular_sim
-import road_traffic_microscopic.traffic_visualization as traffic_sim
 import model_and_simulate.utilities.pygame_simple as pygame_simple
 
-
-pygame_simulations = {
-    "Molecule_Simulation": molecular_sim.MoleculeVisualization,
-    "Microscopic_Traffic": traffic_sim.TrafficVisualization,
-}
-
-matplotlib_simulations = {
-    "chaos_lorenz": partial(chaos_sim.chaos_main, "lorenz", "k"),
-    "chaos_aizawa": partial(chaos_sim.chaos_main, "aizawa", "c"),
-}
-
-simulation_key = "Microscopic_Traffic"  # change to select simulation to run
+from base_start_menu import pygame_simulations, matplotlib_simulations, BaseStartScreen
 
 
-def pygame_main():
+def run_pygame_main() -> bool:
     """Runs the simulation within pygame logic."""
     reset = True
     while reset:
         simulation = pygame_simulations[simulation_key](simulation_key)
-        reset = simulation.main()
-    pygame_simple.quit_pygame()
+        reset, back_to_start = simulation.main()
+        if back_to_start:
+            return True
+    return False
 
 
 if __name__ == "__main__":
-    if simulation_key in pygame_simulations:
-        pygame_main()
-    else:
-        simulation_main = matplotlib_simulations[simulation_key]
-        simulation_main()
+
+    running = True
+    while running:
+        base_start_screen = BaseStartScreen()
+        simulation_key, running = base_start_screen.show_start_screen()
+        if running:
+            if simulation_key in pygame_simulations:
+                running = run_pygame_main()
+            else:
+                simulation_main = matplotlib_simulations[simulation_key]
+                simulation_main()
+    pygame_simple.quit_pygame()

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import Optional, TypedDict
+from typing import Optional
 import pygame
 
 from .pygame_button import SwitchButton, TextButton, Button
@@ -11,20 +11,14 @@ from .pygame_simple import (
     check_for_quit,
     check_for_reset,
     play_music_loop,
+    get_window_resolution,
 )
 from .simulation import SimulationParameters
 
 
-class StartMenuStatus(TypedDict):
-    """Typing class to check menu status variables."""
 
-    show_start: bool
-    read_input_to: Optional[TextButton]
-    music: str
-
-
-class StartScreen(ABC):
-    """Abstract base class for pygame start screens."""
+class SimulationStartScreen(ABC):
+    """Abstract base class for pygame start screens for simulation visualizations."""
 
     music = "menu_light"  # type: str
 
@@ -33,6 +27,7 @@ class StartScreen(ABC):
         self.show_start = False  # type: bool
         self.read_input_to = None  # type: Optional[TextButton]
         self.buttons = None
+        self.back_to_menu = False  # type: bool
 
     @abstractmethod
     def create_menu_items(self) -> tuple[int, int, SimulationParameters, list[Button]]:
@@ -48,20 +43,22 @@ class StartScreen(ABC):
         ]
         return menu_texts
 
-    def show_start_screen(self) -> tuple[SimulationParameters, bool, bool]:
+    def show_start_screen(self) -> tuple[SimulationParameters, bool, bool, bool]:
         """Invokes menu creation and runs the pygame loop."""
         self.buttons, simulation_parameters = self.initialize_menu()
-        running, reset = True, False
-        while self.show_start and running:  # show_start set by callback functions
+        running, reset, back_to_menu = True, False, False
+        while (
+            self.show_start and running and not self.back_to_menu
+        ):  # show_start set by callback functions
             running, reset = self.do_start_screen_loop()
         self.simple_pygame.all_texts.clear()
-        return simulation_parameters, running, reset
+        return simulation_parameters, running, reset, self.back_to_menu
 
     def initialize_menu(self) -> tuple[list[Button], SimulationParameters]:
         """Invoke buttons and texts creation."""
         self.show_start = True
-        play_music_loop(StartScreen.music)
-        StartScreen.music = "menu_dark"
+        play_music_loop(SimulationStartScreen.music)
+        SimulationStartScreen.music = "menu_dark"
         col_w, row_h, simulation_parameters, buttons = self.create_menu_items()
         menu_texts = self.create_menu_texts(col_w, row_h)
         for text, args in menu_texts:
@@ -99,15 +96,24 @@ class StartScreen(ABC):
         return running, reset
 
     def create_default_items(self, col_w: int, row_h: int):
-        """Gets all sprites list and creates a start button on the upper right corner."""
+        """Gets all sprites list and creates a start and a back button."""
         menu_items = self.simple_pygame.all_sprites
+        width, height = get_window_resolution()
 
         def on_click_listener_start(*args):
             """The callback function for start button."""
             self.show_start = False
 
-        default_buttons = [SwitchButton((col_w * 2, row_h), (6 * col_w, row_h), text="Start")]
-        self.add_switch_buttons(default_buttons, menu_items, on_click_listener_start)
+        def on_click_listener_back(*args):
+            """The callback function for back button."""
+            self.back_to_menu = True
+
+        default_buttons = [
+            SwitchButton((col_w * 2, row_h), (width - 2 * col_w, row_h), text="Start"),
+            SwitchButton((col_w * 2, row_h), (0, height - row_h), text="Back"),
+        ]
+        self.add_switch_buttons(default_buttons[:1], menu_items, on_click_listener_start)
+        self.add_switch_buttons(default_buttons[1:], menu_items, on_click_listener_back)
         return menu_items, default_buttons
 
     @staticmethod

@@ -3,11 +3,11 @@ import pygame
 
 from model_and_simulate.utilities.pygame_simple import Color
 from model_and_simulate.utilities.pygame_button import SwitchButton, TextButton, Button
-from model_and_simulate.utilities.start_screen import StartScreen
+from model_and_simulate.utilities.start_screen import SimulationStartScreen
 from .traffic_simulation import TrafficParameters
 
 
-class TrafficStartScreen(StartScreen):
+class TrafficStartScreen(SimulationStartScreen):
     """The start screen for TrafficSimulation`."""
 
     def create_menu_items(self) -> tuple[int, int, TrafficParameters, list[Button]]:
@@ -101,7 +101,7 @@ class TrafficStartScreen(StartScreen):
     @staticmethod
     def create_menu_texts(col_w: int, row_h: int) -> list:
         """Gets the raw texts for the start menu. This texts are just drawn, with no logic."""
-        menu_texts = StartScreen.create_menu_texts(col_w, row_h)
+        menu_texts = SimulationStartScreen.create_menu_texts(col_w, row_h)
         y = 3
         for text, limit in zip(("total density", "dawdling probability"), (10, 0)):
             menu_texts.append((text, (3.4 * col_w, y * row_h + row_h / 2)))

@@ -31,7 +31,7 @@ class MoleculeVisualization(SimulationVisualization):
             pos = self.simulation.positions[molecule]
             molecule_sprites.add(Molecule(self.coord_mapper, self.simulation_parameters.sigma, pos))
 
-    def show_start_screen(self) -> tuple[SimulationParameters, bool, bool]:
+    def show_start_screen(self) -> tuple[SimulationParameters, bool, bool, bool]:
         """Calls the implementation of molecule start screen."""
         molecule_start_screen = MoleculeStartScreen(self.simple_pygame)
         return molecule_start_screen.show_start_screen()
