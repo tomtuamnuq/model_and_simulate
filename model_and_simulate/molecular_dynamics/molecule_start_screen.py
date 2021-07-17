@@ -1,5 +1,4 @@
 """Module for the molecule simulation menu."""
-import pygame
 
 from .molecule_simulation import distributions, MoleculeParameters
 from model_and_simulate.utilities.pygame_button import SwitchButton, TextButton, Button
@@ -24,7 +23,7 @@ class MoleculeStartScreen(SimulationStartScreen):
                 text=str(v),
                 in_and_active_color=(Color.HGREEN, Color.SILVER),
             ): v
-            for x, v in zip((1, 2, 3), (0.002, 0.001, 0.0005))
+            for x, v in zip((1, 2, 3), (0.01, 0.001, 0.0001))
         }
         self.default_button_on(buttons_h, simulation_parameters.time_step)
 
@@ -126,7 +125,7 @@ class MoleculeStartScreen(SimulationStartScreen):
         ]
         y = 3
         for text, limit in zip(
-            ("Rows", "Columns", "Num Molecules", "Sigma", "Init velocity"), (99, 99, 999, 9, 99)
+            ("Rows", "Columns", "Num Molecules", "Sigma", "Init velocity"), (99, 99, 999, 9, 999)
         ):
             menu_texts.append((text, (4 * col_w, y * row_h + row_h / 2)))
             menu_texts.append(("<= " + str(limit), (7 * col_w, y * row_h + row_h / 2)))

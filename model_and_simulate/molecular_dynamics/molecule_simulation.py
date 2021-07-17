@@ -66,7 +66,12 @@ class MoleculeSimulation(Simulation):
             low=init_vel_range[0], high=init_vel_range[1], size=num_molecules
         )
         self._velocities = np.column_stack((velocities_x, velocities_y))
+        self._total_energy = self._calculate_energy()
         self._accelerations = np.zeros_like(self._velocities)
+
+    def _calculate_energy(self) -> float:
+        """Sum of squares of velocities gives kinetic energy of the system."""
+        return np.linalg.norm(self._velocities) ** 2
 
     def _init_positions(self, rng_gen: callable, centralize: bool) -> np.ndarray:
         positions_x = rng_gen(size=len(self._molecules))
@@ -105,6 +110,12 @@ class MoleculeSimulation(Simulation):
     def _calc_velocities(self) -> None:
         self._velocities += self._h / 2 * self._accelerations
 
+    def _norm_velocities(self) -> None:
+        current_energy = self._calculate_energy()
+        if current_energy > 0:
+            norm_factor = np.sqrt(self._total_energy / current_energy)
+            self._velocities = norm_factor * self._velocities
+
     def _calc_positions(self) -> None:
         self._positions += self._h * self._velocities + self._h ** 2 / 2 * self._accelerations
         self._field.correct_positions(self._positions)
@@ -141,16 +152,17 @@ class MoleculeSimulation(Simulation):
         self._field.place_into_cells(self._positions)
         self._calc_forces()
         self._calc_velocities()
+        self._norm_velocities()
 
 
 @dataclass
 class MoleculeParameters(SimulationParameters):
     """Class for keeping track of the simulation parameters in menus."""
 
-    num_molecules: int = 500
-    num_rows: int = 15
-    num_columns: int = 15
+    num_molecules: int = 600
+    num_rows: int = 20
+    num_columns: int = 20
     sigma: int = 1
     distribution: str = "uniform"
     time_step: float = 0.001
-    init_vel_range: tuple[int, int] = -10, 10
+    init_vel_range: tuple[int, int] = -300, 300
