@@ -7,6 +7,7 @@ from model_and_simulate.utilities.pygame_simple import Color
 
 class Molecule(pygame.sprite.Sprite):
     """A visualization of a single molecule as pygame Sprite."""
+    colors = [c for c in Color.__members__.values()]
 
     def __init__(self, mapper: CoordinateMapper2D, sigma: float, pos: np.ndarray):
         """
@@ -21,7 +22,8 @@ class Molecule(pygame.sprite.Sprite):
         self.image = pygame.Surface((2 * sigma, 2 * sigma))
         self.image.fill(Color.WHITE.value)
         self.image.set_colorkey(Color.WHITE.value)
-        pygame.draw.circle(self.image, Color.HGREEN.value, [sigma, sigma], sigma)
+        color = Molecule.colors[np.random.randint(0, len(Molecule.colors))]
+        pygame.draw.circle(self.image, color.value, [sigma, sigma], sigma)
         self.rect = self.image.get_rect()
         self.pos = pos
 
