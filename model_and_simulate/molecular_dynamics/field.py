@@ -22,6 +22,7 @@ class Field:
         self._displacements = self._init_displacements(num_rows, num_columns)
         self._bins_x = np.linspace(0, self.width, num_columns + 1)
         self._bins_y = np.linspace(0, self.height, num_rows + 1)
+        self._border_max = np.asarray([self.width, self.height])
 
     def clear_cells(self) -> None:
         """Make all cells empty."""
@@ -55,11 +56,7 @@ class Field:
 
     def correct_positions(self, positions: np.ndarray) -> None:
         """Move objects outside the field to the opposite position inside the field."""
-        for pos in positions:
-            if pos[0] < 0 or pos[0] >= self.width:
-                pos[0] = pos[0] % self.width
-            if pos[1] < 0 or pos[1] >= self.height:
-                pos[1] = pos[1] % self.height
+        positions %= self._border_max
 
     def _init_displacements(
         self, num_rows: int, num_columns: int
